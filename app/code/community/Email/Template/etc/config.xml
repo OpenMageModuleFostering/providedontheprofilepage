@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Email_Template>
+            <version>1.0.0</version>
+        </Email_Template>
+    </modules>
+    <global>
+        <helpers>
+            <email_template>
+                <!-- Helper definition needed by Magento -->
+                <class>Mage_Core_Helper</class>
+            </email_template>
+        </helpers>
+    </global>
+    <admin>
+        <routers>
+            <adminhtml>
+                <args>
+                    <modules>
+                        <foo_bar before="Mage_Adminhtml">Email_Template_Adminhtml</foo_bar>
+                    </modules>
+                </args>
+            </adminhtml>
+        </routers>
+    </admin>
+</config>

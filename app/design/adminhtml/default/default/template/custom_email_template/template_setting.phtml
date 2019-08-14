@@ -1,0 +1,94 @@
+<html>
+    <head>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+	<script>jQuery.noConflict();</script>
+	<script src="//cdn.ckeditor.com/4.4.7/full/ckeditor.js"></script>
+	<script type="text/javascript">
+            window.onload = function ()
+
+            {
+                CKEDITOR.replace('editor1');
+            };
+	</script>
+	<style type="text/css">
+	    .save-btn{ padding: 6px 20px 6px; margin-top: 15px; }
+	    .logo-form{ margin-top: 15px; }
+	    .logo-form /*, .footer-link-sec*/{ border-bottom: 1px solid #ccc; padding-bottom: 10px; margin-bottom: 15px; }
+	    .logo-form .checkbox, .footer-link-sec .checkbox{ margin-bottom: 5px; }
+	    .logo-form label, .footer-link-sec label{ margin: 0 6px; }
+	    #link_setting, #logo_setting{ margin-left: 7px; }
+	</style>
+    </head>
+    <body>
+	<?php echo '<h3>Catched user Email Template</h3>'; ?>
+	<?php
+	$config = Mage::getConfig()->getResourceConnectionConfig("default_setup");
+	$_host = $config->host;
+	$_uname = $config->username;
+	$_pass = $config->password;
+	$_dbname = $config->dbname;
+	$_host; ///likewise
+	$read4 = Mage::getSingleton('core/resource')->getConnection('core_read');
+	$write4 = Mage::getSingleton('core/resource')->getConnection('core_write');
+	$result5 = $read4->fetchAll("SELECT * FROM log_url_info where url_id ='14'");
+	//print_r($result5);
+	$base_url = $result5['0']['url'];
+
+	$sql_select = $read4->fetchall("select * from abandon_email_template");
+	//print_r($sql_select);
+	?>
+	<?php
+########################################################################################################################
+#                                  Email Template Editor
+##########################  ############################################################################################ 
+	?>       
+
+	<textarea id="editor1" name="editor1"><?php echo $sql_select['1']['email_conetnt']; ?></textarea>
+	<button id="save" class="save-btn">Save</button>
+	<input type="hidden" id ="mage_find" value="<?php echo Mage::helper("greenmodule")->find_mage(); ?>">
+	<?php
+	$read_data = Mage::getSingleton('core/resource')->getConnection('core_read');
+	$write_data = Mage::getSingleton('core/resource')->getConnection('core_write');
+	$result = $read_data->fetchAll("select * from abandoned_extensionsetting");
+	?>
+
+	<?php
+########################################################################################################################
+#                                  End Email Template Editor
+##########################  ############################################################################################ 
+	?> 
+
+
+<?php
+########################################################################################################################
+#                                 Ajax for  email
+##########################  ############################################################################################ 
+?> 
+<script>
+	jQuery(document).ready(function(){
+    jQuery("#save").click(function () {
+        var editor1 = CKEDITOR.instances['editor1'].getData();
+        var mage_find = jQuery('#mage_find').val();
+        var type = 'catched_user';
+        //console.log(editor1); return false;
+        //alert(status);
+        formData = '&editor1=' + editor1 + '&mage_find=' + mage_find+'&type='+type;
+        jQuery.ajax({
+            type: 'POST',
+            data: formData,
+            url: "/email_content.php",
+            success: function (result) {
+                var Success = result
+                alert(Success);
+                //alert(Success.message);
+            }
+        });
+    });
+});
+</script>
+
+<?php
+########################################################################################################################
+#                                 End Ajax for Logo and footer link and email
+##########################  ############################################################################################ 
+?> 			

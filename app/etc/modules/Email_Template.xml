@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Email_Template>
+            <active>true</active>
+            <codePool>community</codePool>
+        </Email_Template>
+    </modules>
+</config>

@@ -1,0 +1,193 @@
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script>jQuery.noConflict();</script> 
+<script src="http://code.highcharts.com/highcharts.js"></script>
+<script src="http://code.highcharts.com/modules/exporting.js"></script>
+
+
+<?php
+$loginUrl = 'http://staging.pricelizer.com/webService/getData/?liscence_key=1bbda9778bd4d706d24822f0efa49a44';
+$agent= 'Mozilla/5.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; .NET CLR 1.0.3705; .NET CLR 1.1.4322)';
+
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); 
+curl_setopt($ch, CURLOPT_URL,$loginUrl);
+curl_setopt($ch, CURLOPT_USERAGENT, $agent);
+$result=curl_exec($ch);
+curl_close($ch);
+$result=json_decode($result);
+$catcher_user =  $result->{'catchedUser'}; // 12345
+$abandonedUser  =  $result->{'abandonedUser'}; // 12345
+
+$read_data = Mage::getSingleton('core/resource')->getConnection('core_read'); 
+$write_data = Mage::getSingleton('core/resource')->getConnection('core_write');
+
+//*************************************************Count placedorder************************************************************************//
+$order_count = $read_data->fetchAll('SELECT SUM(qty_ordered) AS s, DATE_FORMAT(created_at, "%M") AS m
+FROM sales_flat_order_item
+GROUP BY DATE_FORMAT(created_at, "%Y-%m")');
+//*************************************************end placed order******************************************************************//
+//print_r($order_count); 
+
+//*************************************************Count abandoned cart************************************************************************//
+$abandone_cart_count = $read_data->fetchAll('SELECT SUM( items_qty ) AS s, DATE_FORMAT( created_at, "%M" ) AS m ,DATE_FORMAT( created_at, "%Y") as y
+FROM sales_flat_quote WHERE is_active=1 AND customer_id IS NOT NULL 
+GROUP BY DATE_FORMAT( created_at, "%Y-%m" ) ');
+
+//*************************************************EndCount abandoned cart******************************************************************//
+
+//print_r($abandone_cart_count);
+$feb_data = $abandone_cart_count['3']['s'];
+$march_data = $abandone_cart_count['4']['s'];
+
+foreach($order_count as $key)
+{
+	//echo '<pre>';print_r($key);
+	$ordered_product[]= $key['s'];
+	
+	}         
+
+$ordered_product;
+
+$imp_order=implode(',',$ordered_product);
+//print_r($imp_order);
+
+//print_r($_SERVER["REMOTE_ADDR"]);
+
+
+			?>
+<div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+<?php
+//------------------------------------------------------------Scan all Abandon Cart Product---------------------------------------------//
+ 
+						$collection = Mage::getResourceModel('reports/quote_collection');
+						$collection->prepareForAbandonedReport();
+						//echo '<pre>';print_r($collection); die;
+						$collection->getSelect()->limit($offset,$limit);
+						
+						$output = $collection->load()->toArray();
+						$i=0;
+						foreach($collection->load()->toArray() as $key=>$user_detail)
+						{
+							$details=$user_detail;
+							}
+							
+							foreach ($details as $val)
+							{
+								
+								$count[] = $val['items_qty'];
+						
+						
+						$model = Mage::getModel('catalog/product')->getCollection()->addAttributeToSelect('name')->addAttributeToFilter('entity_id',$val['entity_id'])
+						->getFirstItem();
+						foreach($model as $prod_sku)
+						{
+							}
+						}
+						$total_abandon_cart = array_sum($count);
+						//echo "Abandoned cart = " . $total_abandon_cart. "\n";
+						echo '<br>';
+						
+					
+//------------------------------------------------------------End Scan all Abandon Cart Product---------------------------------------------//
+
+
+//------------------------------------------------------------Scantotal number of placed order---------------------------------------------//
+
+			$orders = Mage::getResourceModel('sales/order_collection');
+			$sum =0;
+			foreach($orders as $order){
+				//echo '<pre>';print_r($order);
+				$date=strtotime($order->created_at);  // if today :2013-05-23
+				$newDate = date('Y-m-d',strtotime('+30 days',$date));
+				$createDate = new DateTime($order->created_at);
+				$strip_date = $createDate->format('Y-m-d');
+				$created_date[] = $strip_date;
+				
+				 $items = $order->getAllVisibleItems();
+				  foreach($items as $item){
+					  //echo '<pre>';print_r($item);
+					$count = (array)$item->qty_ordered;
+					
+					$total_order[] = $count;   
+				   // echo $item->qty_ordered; 
+			   
+				}
+				
+			$sum =$sum + $order->total_item_count;
+			$order_count[] = (array)$order->total_item_count;
+
+			}
+
+			//echo "Ordered Product = " . $sum . "\n";
+			
+			//--------------------------------------------------------EndScantotal number of placed order---------------------------------------------//
+              
+             $total =  $total_abandon_cart+$sum;
+             $data_content = 100/$total;
+             $percentage_of_placedorder = $sum*$data_content;
+             $percentage_of_abandonedcart = $total_abandon_cart*$data_content;
+             echo '<ul class="box-percent">';
+			 echo '<li class="box-max"><span>Extenssion installation date: 4 September 2014</span></li>';
+             echo '<li class="box-min"><span>&nbsp;</span>'. ceil($percentage_of_placedorder).'% placed orders</li>';
+             echo '<li class="box-max"><span>&nbsp;</span>'. ceil($percentage_of_abandonedcart).'% abandoned carts</li>'; 
+			 
+             echo '</ul>';
+
+?> 
+
+<script>
+jQuery(function () {
+    jQuery('#container').highcharts({
+        title: {
+            text: '',
+            x: -20 //center
+        },
+        subtitle: {
+            text: '',
+            x: -20
+        },
+        xAxis: { 
+            categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+                'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+        },
+        yAxis: { 
+            title: {  
+                text: ''
+            }, 
+            plotLines: [{ 
+                value: 0,  
+                width: 1,
+                color: '#808080'
+            }]
+        },
+        tooltip: {
+            valueSuffix: ''
+        },
+        legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'middle',
+            borderWidth: 0
+        },
+        series: [{
+            name: 'Abandoned Carts',
+            data: [00, <?php echo $feb_data;  ?>, <?php  echo $march_data; ?>, 00, 00, 00, 00, 00, 00, 00, 00, 00]
+        }, {
+            name: 'Placed Order',
+            data: [<?php print_r($imp_order); ?>]
+        }, {
+            name: 'Registered Users(Invited by email)',
+            data: [ <?php echo $abandonedUser;  ?>, 00, 00, 00, 00, 00, 00, 00,00,00, 00, 00]
+        }, {
+            name: 'Registered Users(Catched the leaving users)',
+            data: [<?php echo $catcher_user;  ?>, 00, 00, 00, 00, 00, 00, 00, 00,00,00, 00]
+        },
+        ]
+        
+        
+    });
+});
+
+
+</script>

@@ -1,0 +1,16 @@
+{
+    "name": "OpenMageModuleFostering/ProvidedOnTheProfilePage",
+    "type": "magento-module",
+    "license": "http://opensource.org/licenses/osl-3.0.php",
+    "homepage": "",
+    "description": "RevalizerNoMoreAbandonedCarts",
+    "authors": [
+    {
+        "name": "Karl Lillrud",
+        "email": "contact@revalizer.com"
+    }
+],
+    "suggest": {
+        "magento-hackathon/magento-composer-installer": "*"
+    }
+}

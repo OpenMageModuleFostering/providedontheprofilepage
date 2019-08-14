@@ -1,0 +1,25 @@
+<?xml version="1.0" ?>
+<config>
+    <menu>
+        <green_menu translate="title" module="greenmodule">
+            <title>Abandoned carts</title>  
+            <sort_order>100</sort_order>
+            <children>
+                <index module="greenmodule" translate="title">
+                    <title>Abandoned carts</title>
+                    <sort_order>1</sort_order>
+                    <action>greenmodule/index/abandonedCart</action>
+                </index>
+                <list module="greenmodule" translate="title">
+                    <title>Extension setting</title>
+                    <sort_order>2</sort_order>
+                    <action>greenmodule/index/extensionSetting</action>
+                </list>
+            </children>
+            
+            
+            
+        </green_menu>
+    </menu>
+  
+</config>

@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Button_Pricelizer>
+            <version>0.1.0</version>    <!-- Version number of your module -->
+        </Button_Pricelizer>
+    </modules>
+    <frontend>
+        <routers>
+            <pricelizer>
+                <use>standard</use>
+                <args>
+                    <module>Button_Pricelizer</module>
+                    <frontName>pricelizer</frontName>
+                </args>
+            </pricelizer>
+        </routers>
+    </frontend>
+</config>

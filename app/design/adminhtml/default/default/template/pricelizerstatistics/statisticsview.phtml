@@ -1,0 +1,252 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     default_default
+ * @copyright   Copyright (c) 2014 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<?php
+/**
+ * @var $this Mage_Currencysymbol_Block_Adminhtml_System_Currencysymbol
+ */
+?>
+    <link href="<?php echo $this->getSkinUrl(); ?>css/nv.d3.css" rel="stylesheet" type="text/css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.2/d3.min.js" charset="utf-8"></script>
+    
+    <style>
+        text {
+          fill: #fff !important;
+          font-size: 12px !important;
+          text-shadow: 1px 1px #000;
+          font: 12px sans-serif; 
+        }
+        svg {
+            display: block;
+            float: left;
+            height: 300px;
+            width: 300px; 
+        }
+        html, body {
+            margin: 0px;
+            padding: 0px;
+            height: 100%;
+            width: 100%;
+        }
+        .box-percent {
+          float: right;
+          margin: 90px 0 0;
+          max-width: 350px;
+          padding: 0;
+        }
+       .box-percent li {
+          float: left;
+          font-size: 16px;
+          font-weight: bold;
+          margin: 10px 0;
+          width: 100%;
+        }
+        .box-min span {
+          background: none repeat scroll 0 0 #1f77b4;
+          border: 1px solid;
+          border-radius: 50%;
+          display: block;
+          float: left;
+          height: 20px;
+          margin-right: 10px;
+          width: 20px;
+        }
+        .box-max span {
+          background: #AEC7E8;
+          border: 1px solid;
+          border-radius: 50%;
+          display: block;
+          float: left;
+          height: 20px;
+          margin-right: 10px;
+          width: 20px;
+        }
+        .percent-circle-value {
+          float: left;
+          position: relative;
+          width: 300px;
+        }
+        .middle-content {
+          color: #1f77b4;
+          font-weight: bold;
+          left: 27%;
+          line-height: 26px;
+          position: absolute;
+          text-align: center;
+          top: 40%;
+        }
+        .cont-mid {
+          font-size: 16px;
+        }
+        .middle-content span {
+          display: block;
+        }
+        .mid-cont-head {
+          font-size: 50px;
+          margin-bottom: 8px;
+        }
+        .chart-container {
+          margin: 0 auto;
+          max-width: 700px;
+        }
+    </style>
+
+<div class="content-header">
+    <table cellspacing="0">
+        <tr>
+            <td style="width:50%;"><h3 class="icon-head head-system-currency"><?php echo $this->getHeader() ?>Statistics</h3></td>
+            <td class="form-buttons">
+                <?php
+                    echo $this->getSaveButtonHtml();
+                ?>
+            </td>
+        </tr>
+    </table>
+</div>
+<div class="chart-container">
+<?php $this->getCurrencySymbolsData();?>
+<?php
+//------------------------------------------------------------Scan all Abandon Cart Product---------------------------------------------//
+ 
+						$collection = Mage::getResourceModel('reports/quote_collection');
+						$collection->prepareForAbandonedReport(); 
+						$collection->getSelect()->limit($offset,$limit);
+						$output = $collection->load()->toArray();
+						$i=0;
+						foreach($collection->load()->toArray() as $key=>$user_detail)
+						{
+							$details=$user_detail;
+							}
+							
+							foreach ($details as $val)
+							{
+								
+								$count[] = $val['items_qty'];
+						
+						
+						$model = Mage::getModel('catalog/product')->getCollection()->addAttributeToSelect('name')->addAttributeToFilter('entity_id',$val['entity_id'])
+						->getFirstItem();
+						foreach($model as $prod_sku)
+						{
+							}
+						}
+						$total_abandon_cart = array_sum($count);
+						//echo "Abandoned cart = " . $total_abandon_cart. "\n";
+						echo '<br>';
+						
+				
+//------------------------------------------------------------End Scan all Abandon Cart Product---------------------------------------------//
+
+
+//------------------------------------------------------------Scantotal number of placed order---------------------------------------------//
+
+			$orders = Mage::getResourceModel('sales/order_collection');
+			$sum =0;
+			foreach($orders as $order){
+				//echo '<pre>';print_r($order);
+				$date=strtotime($order->created_at);  // if today :2013-05-23
+				$newDate = date('Y-m-d',strtotime('+30 days',$date));
+				$createDate = new DateTime($order->created_at);
+				$strip_date = $createDate->format('Y-m-d');
+				$created_date[] = $strip_date;
+				
+				 $items = $order->getAllVisibleItems();
+				  foreach($items as $item){
+					  //echo '<pre>';print_r($item);
+					$count = (array)$item->qty_ordered;
+					
+					$total_order[] = $count;   
+				   // echo $item->qty_ordered; 
+			   
+				}
+				
+			$sum =$sum + $order->total_item_count;
+			$order_count[] = (array)$order->total_item_count;
+
+			}
+
+			//echo "Ordered Product = " . $sum . "\n";
+			
+			//--------------------------------------------------------EndScantotal number of placed order---------------------------------------------//
+              
+             $total =  $total_abandon_cart+$sum;
+             $data_content = 100/$total;
+             $percentage_of_placedorder = $sum*$data_content;
+             $percentage_of_abandonedcart = $total_abandon_cart*$data_content;
+             echo '<ul class="box-percent">';
+             echo '<li class="box-min"><span>&nbsp;</span>'. 
+             ceil($percentage_of_placedorder).'% placed orders</li>';
+             echo '<li class="box-max"><span>&nbsp;</span>'. ceil($percentage_of_abandonedcart).'% abandoned carts</li>'; 
+             echo '</ul>';
+
+?> 
+
+<script type="text/javascript" src="<?php echo $this->getSkinUrl(); ?>js/nv.d3.js"></script>
+<script type="text/javascript" src="<?php echo $this->getSkinUrl(); ?>js/stream_layers.js"></script>
+<div class="percent-circle-value">
+<svg id="test2"></svg>
+<span class="middle-content"><span class="mid-cont-head"><?php  $percentage_of_abandonedcart ; echo $ceiled = ceil($percentage_of_abandonedcart); ?>%</span>
+    <?php
+      echo '<span class="cont-mid"> Abandoned carts</span>';
+
+  ?></span>
+</div>
+<script>
+    var testdata = [
+        {key: "One", y: <?php echo $percentage_of_placedorder; ?>},
+        {key: "Two", y: <?php echo $percentage_of_abandonedcart; ?>},
+        
+    ];
+
+    var width = 300;
+    var height = 300;
+    nv.addGraph(function() {
+        var chart = nv.models.pie()
+                .x(function(d) { return d.key })
+                .y(function(d) { return d.y })
+                .width(width)
+                .height(height)
+                .labelType("percent")
+                .showLabels(true)
+                .donut(true)
+                .donutRatio(0.60)
+                .growOnHover(true); 
+                
+                
+
+        d3.select("#test2")
+                .datum([testdata])
+                .transition().duration(1200)
+                .attr('width', width)
+                .attr('height', height)
+                .call(chart);
+
+        return chart;
+         
+    });
+</script>
+
+</div>

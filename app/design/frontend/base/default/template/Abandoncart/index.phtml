@@ -1,0 +1,52 @@
+<?php $cart_qty = (int) Mage::getModel('checkout/cart')->getQuote()->getItemsQty();
+        $modules = Mage::getConfig()->getNode('modules')->children();
+		$modulesArray = (array)$modules;
+		 if(isset($modulesArray['Greenacorn_Greenmodule']))
+					
+		 { echo 'Abandon Cart Module exist'.'<br>';
+
+		
+			  if($cart_qty!=0)
+			  {
+				  ?>
+				  
+				 <script>
+						var isOk = false;
+						var isFirst = false;
+					window.onload=function(){
+					window.onbeforeunload = function(e) {
+						isOk=true;
+						if(!isFirst)
+							return 'Hi, you have added some products to your cart. Do you want us to alert you when the price drop on these specific products?';
+						else
+							return false;
+					}
+
+					}
+					// on body click isOk=false;
+					
+					window.onfocus = function () {
+					  if(isOk==true)
+						{
+							isOk=false;
+							isFirst= true;
+							window.onbeforeunload = null;
+							window.location='http://projects.udaantechnologies.com/magentodev/index.php/greenmodule/frontmodule/autoLogin';
+						}
+					};
+					</script> 
+				  
+				  <?php
+				  
+			  }
+			 else
+				  {
+					  echo 'Cart Empty';
+					  
+					}
+				}
+				else
+				{
+					echo 'Module does not exist';
+					}	  
+ ?>

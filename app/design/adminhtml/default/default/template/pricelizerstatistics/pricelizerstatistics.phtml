@@ -1,0 +1,336 @@
+<style>
+    .cont-mang {
+        float: left;
+        padding: 0 20px;
+        width: 97%;
+    }
+    table.data{ width: 100%; }
+    .grid h1.title-name{font-size:14px; text-transform:capitalize; float:left;margin-right:10px;}
+    .invite_link{font-weight:bold; text-decoration:none;}
+    .invite_link{font-weight:bold; text-decoration:underline;}
+    a.price_alert {
+        background: #EA7601;
+        color: #FFFFFF;   
+        margin-bottom: 10px;
+        padding: 5px 10px;
+        text-align: right;
+        text-decoration: none; border-radius:5px;
+    }
+    a.price_alert:hover{color: #FFFFFF; background:orange;} 
+    .email_send{color:#66a202;}
+    .email_not_send{color:#ff0000;}
+    table.data td{font-size:0.9em;}
+    /*    .cont-mang{
+    width: 100%;
+    float: left;
+    }*/
+    .data input[type="text"]{
+        width: 80%;
+    }
+    .grid {
+        float: left;
+        width: 100%;
+    }
+    .app-title-name{text-align:center; padding:10px; font-size:24px; color:#eb5e00;}
+
+    .click-price{width:100%; height:30px; text-align:center;}
+
+    .setting-from{ width:250px; margin:0px auto; height:50px;}
+    .setting-from .man{ width:100px; float:left; font-size:14px;}
+    .setting-from .auto{ width:100px; float:left; font-size:14px;}
+    .form_content {
+        border: 1px solid #EB5E00;
+        box-shadow: 0 0 3px #DDDDDD;
+        margin: 0 auto;
+        padding: 30px;
+        text-align: center;
+
+    }
+    .form_content input {
+        height: 40px;
+        margin-bottom: 10px;
+        width: 100%;
+        padding:10px;
+    }
+    .form_content button {
+        padding:10px;
+    }
+    .align_center{
+        margin:0 auto;
+        width:30%;
+        margin-top:90px;
+        text-align:center;
+
+    }
+    .align_center h2{
+        color:#EB5E00;
+    }
+    .setting-from .man {
+        float: left;
+        font-size: 14px;
+        width: 100%;
+    }
+    .setting-from .auto {
+        float: left;
+        font-size: 14px;
+        font-weight: bold;
+        margin-top: 4px;
+        width: auto;
+    }
+    .setting-from {
+        height: 50px;
+        margin: 0 auto;
+        width: 310px;
+    }
+    .man > h3 {
+        float: left;
+    }
+    .btn_manage{
+        text-align:center;
+    }
+    .btn_manage select{
+        width:200px;
+        height:20px;
+        margin-bottom:5px;
+    }
+    .btn_align{
+        text-align:center;
+    }
+</style>
+<style type="text/css">
+    .white_content {
+        background-color: #ffffff;
+        border: 5px solid ;
+        height: 50%;
+        left: 25%;
+        max-height: 500px;
+        overflow: auto;
+        padding: 13px 15px;
+        position: fixed;
+        top: 20%;
+        width: 50%;
+        z-index: 1008; 
+        display:none;
+    }
+    .close-btn
+    {
+        font-size:20px;
+        float:right;
+    }
+
+
+    .pagination {
+        border-radius: 4px;
+        display: inline-block;
+        margin: 0px;
+        padding-left: 0;
+    }
+    .pagination > li {
+        display: inline;
+    }
+
+    .pagination > li:first-child > a, .pagination > li:first-child > span {
+        border-bottom-left-radius: 4px;
+        border-top-left-radius: 4px;
+        margin-left: 0;
+    }
+
+    .pagination > li, .pagination > li > span {
+        background-color: #fff;
+        border: 1px solid #ddd;
+        color: #428bca;
+        float: left;
+        line-height: 1.42857;
+        margin-left: -1px;
+        padding: 6px 12px;
+        position: relative;
+        text-decoration: none;
+    }
+
+
+    .page{ background-color: #fff;
+        border: none;
+        color: #000;
+        float: left;
+        line-height: 1.42857;
+        margin-left: -1px;
+        padding: 6px 12px;
+        position: relative;
+        text-decoration: none;
+    }
+    .centrick{width:275px; margin:0px auto;} 
+    .centrick:after{clear:both;}    
+    .catched-user-tracker .checkbox, .one-click-signup .checkbox, .add-watchlist-button .checkbox{ margin-bottom: 5px; }
+    .catched-user-tracker label, .one-click-signup label, .add-watchlist-button label, .checkbox label{ margin:0 6px; }
+    .catched-user-tracker input, .catched-user-tracker select { margin-bottom: 3px; margin-right: 2px; vertical-align: middle; }
+    .one-click-signup input, .one-click-signup select { margin-bottom: 3px; margin-right: 4px; vertical-align: middle; }
+    .add-watchlist-button input, .add-watchlist-button select { margin-bottom: 3px; margin-right: 4px; vertical-align: middle; }
+    .border-bottm{ border-bottom: 1px solid #ccc; padding-bottom: 10px; margin-bottom: 15px; }
+    .inner-content{ padding: 0 30px; }
+    .checkbox{margin-bottom:5px;}
+    button#catched_setting, button#save_signup, button#save_watc   $orders_data = Mage::getModel('sales/order')->getCollection()
+    ->addAttributeToFilter('created_at', array('from'=>$strip_date, 'to'=>$newDate))
+    ->addAttributeToFilter('status', array('status','pending'));
+    echo '<pre>';print_r($orders_data);hlist, #logo_setting, #link_setting { margin-left: 7px; }
+    .text-success{ padding-left: 7px; margin-top: 5px; color: #3c763d; }
+</style>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script>jQuery.noConflict();</script> 
+<?php
+    echo '<div class="content-header">
+    <h3 class="icon-head head-report-shopcart-abandoned">Generated Sales</h3>				
+    </div>';
+    require_once 'app/Mage.php';
+
+    /*
+    * Initialize Magento. Older versions may require Mage::app() instead.
+    */
+?>
+
+<!------------------- Total Number of users------------------------------------------>
+<?php
+
+    $read_user = Mage::getSingleton('core/resource')->getConnection('core_read') ;
+    $write_user = Mage::getSingleton('core/resource')->getConnection('core_write'); 
+    $result_user_count = $read_user->fetchAll("SELECT * FROM Abandon_cart_users"); 
+    $result_user_count['0']['Abandoned_cart'];
+    $result_user_count['0']['Catched_user'];
+
+?>
+
+<table style="margin: 0 auto 30px;width: 400px;">
+<tr><td><h3 class="app-title-name">Enrolled users</h3></td></tr>
+<tr><td>Registered users with abandoned carts:</td><td><?php echo $result_user_count['0']['Abandoned_cart']; ?></td></tr>
+<tr><td>Non-registered users that abandoned their cart:</td><td><?php  echo $result_user_count['0']['Catched_user']; ?></td></tr>
+
+</table>
+
+<?php
+    $read_data = Mage::getSingleton('core/resource')->getConnection('core_read');
+    $write_data = Mage::getSingleton('core/resource')->getConnection('core_write');
+    $result = $read_data->fetchAll("select * from abandoned_extensionsetting");
+    Mage::app();
+    $read_data = Mage::getSingleton('core/resource')->getConnection('core_read') ;
+    $write_data = Mage::getSingleton('core/resource')->getConnection('core_write');            
+    $result10 = $read_data->fetchAll("select * from Abandon_cart_licensekey"); 
+    $registered_user_email = $result10['0']['user_email'];
+    $registered_user_license_key = $result10['0']['license_key'];
+
+    $orders = Mage::getResourceModel('sales/order_collection');
+    //echo '<pre>';print_r($orders);
+    $dataArr = array();
+    foreach($orders as $order){
+        //echo '<pre>';print_r($order); 
+        $date=strtotime($order->created_at);  // if today :2013-05-23
+        $newDate = date('Y-m-d',strtotime('+30 days',$date));
+
+        $createDate = new DateTime($order->created_at);
+        $strip_date = $createDate->format('Y-m-d');
+        $created_date[] = $strip_date;
+
+
+        $orderTotals = Mage::getModel('sales/order')->getCollection()
+        ->addAttributeToFilter('status', 'pending')
+        ->addAttributeToFilter('created_at', array('from'=>$strip_date,'to'=>$newDate))
+        ->addAttributeToSelect('grand_total')
+        ->getColumnValues('grand_total');
+
+        $totalSum = array_sum($orderTotals);
+        //print_r($totalSum);
+        $totalSum = Mage::helper('core')->currency($totalSum, true, false);
+        $vowels = array("$", ",");
+        $onlyconsonants = str_replace($vowels, "",$totalSum);
+        $grandtotal_data[] = $onlyconsonants;
+        $grandtotal  = $grandtotal_data['0'];
+        $base_url =  Mage::getBaseUrl();
+        $redirect_url = $base_url.'statistics/front/sales/?total_amount='.$grandtotal.'&liscence_key='.$registered_user_license_key;
+        $current_date  = date('Y-m-d');
+
+    ?>
+    <?php if($result['6']['status']== 'yes') { if($newDate==$current_date) { ?>
+            <script>
+            jQuery(document).ready(function(){
+            jQuery.ajax({
+            type: 'POST',
+            //data:fromData,
+            url:"<?php echo $redirect_url; ?>",
+            success:function(result){
+
+            }
+            });
+
+            });
+            </script>
+
+            <?php } }
+
+
+
+        //echo '<pre>';print_r($order);
+        echo '<div class="grid"><div class="hor-scroll"><table border="1px solid">';
+
+        echo '<tr class="headings"><td colspan="11">'.$strip_date.'</td></tr>';
+        echo '<tr class="headings"><th>SKU</th><th>Product Name</th><th>Price</th><th>Oredered date</th><th>Product status</th><th>Product Quantity</th><th>Currency</th><th>Subtotal</th><th>Payment verified</th><th>User name</th><th>User Email</th></tr>';
+        $items = $order->getAllVisibleItems();
+        //$dataArr = array();
+
+        $i=0;
+        foreach($items as $item){
+
+
+            echo '<tr class="even pointer"><td >'.$item->getSku().'</td>';
+            echo '<td>'.$item->getName().'</td>';
+            echo '<td>'.$item->getPrice().'</td>'; 
+            echo '<td>'.$strip_date.'</td>';
+            echo '<td>'.$item->getStatus().'</td>';
+
+            echo '<td>'.$item->qty_ordered.'</td>';
+            echo '<td>'.$order->base_currency_code.'</td>';
+            echo '<td>'.$item->getRowTotalInclTax().'</td>';
+            echo '<td>'.$order->status.'</td>';
+            echo '<td>'.$order->customer_firstname.'</td>';
+            echo '<td>'.$order->customer_email.'</td></tr>';
+
+
+
+            $dataOrd[$i]['name'] = $item->getName();
+            //$dataArr['orders']['product_name']['product_price'] = $item->getPrice();
+
+            $dataOrd[$i]['price'] = $item->getPrice();
+
+
+
+
+            //$dataArr['liscence_key'] = $registered_user_license_key;
+
+        }
+
+        //echo '<pre>';
+        //print_r($dataOrd);
+
+        $dataArr['liscence_key'] = $registered_user_license_key;
+        $dataArr['total']        = $grandtotal;
+
+        echo '<tr class="even pointer"><td>Shipping amount</td><td>'.$order->shipping_amount.'</td><td>Grand Total</td><td colspan="8">'.$order->grand_total.'</td></tr>';
+        echo '<tr></tr>';
+        echo '</table></div></div>';
+
+
+        /* Get the collection */
+
+
+    }           
+    $json_array = array('orders'=>$dataOrd,'liscence_key'=>$dataArr['liscence_key'],'total_amount'=>$dataArr['total']); 
+    $data = json_encode($json_array);  
+    $data;                                                                        
+    $ch = curl_init();
+    $url ='http://www.pricelizer.com/webService/setSales/';
+
+    //set the url, number of POST vars, POST data
+    curl_setopt($ch,CURLOPT_URL, $url);
+    curl_setopt($ch,CURLOPT_POST, count($data));
+    curl_setopt($ch,CURLOPT_POSTFIELDS, $data);
+    //$result = curl_exec($ch);
+    curl_close($ch);  
+
+?>

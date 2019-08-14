@@ -1,0 +1,109 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     rwd_default
+ * @copyright   Copyright (c) 2014 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<?php $_product = $this->getProduct(); ?>
+
+<?php $buttonTitle = $this->__('Add to Cart'); ?>
+<?php if($_product->isSaleable()): ?>
+    <div class="add-to-cart">
+        <?php if(!$_product->isGrouped()): ?>
+        <div class="qty-wrapper">
+            <label for="qty"><?php echo $this->__('Qty:') ?></label>
+            <input type="text" pattern="\d*" name="qty" id="qty" maxlength="12" value="<?php echo max($this->getProductDefaultQty() * 1, 1) ?>" title="<?php echo $this->__('Qty') ?>" class="input-text qty" />
+        </div>
+        <?php endif; ?>
+        <div class="add-to-cart-buttons">
+            <button type="button" title="<?php echo $buttonTitle ?>" class="button btn-cart" onclick="productAddToCartForm.submit(this)"><span><span><?php echo $buttonTitle ?></span></span></button>
+            <?php echo $this->getChildHtml('', true, true) ?>
+        </div>
+        <?php if(Mage::getSingleton('customer/session')->isLoggedIn())
+							{ 
+							
+							  $customer = Mage::getSingleton('customer/session')->getCustomer();
+							  $email = $customer->getEmail();// for email address
+							  $firstname = $customer->getFirstname();//  For first name
+							  $lastnam= $customer->getLastname();// For last name
+							  $customer_id = $customer->getId();
+							  $product_id = $_product->getId();
+							  $entity_id = $customer->getEntityId();
+								//echo Mage::getBaseUrl();
+								$site_url = Mage::getBaseUrl();
+								 $link = "". $site_url."pricelizer/".'?entity_id='.$entity_id.'&customer_email='.$email.'&item_id='.$product_id;
+                                 echo '<input type="hidden" id="link_value" value="'.$link.'">';
+                                 echo '<input type="hidden" id="link_entity" value="'.$entity_id.'">';
+                                 echo '<input type="hidden" id="link_email" value="'.$email.'">';
+                                 echo '<input type="hidden" id="link_productid" value="'.$product_id.'">';
+                                 
+								 ?>
+			
+			
+			<?php   $resource = Mage::getSingleton('core/resource');
+									$readConnection = $resource->getConnection('core_read');
+									$query = 'SELECT * FROM ' . $resource->getTableName('Abandon_cart_licensekey');
+									$results = $readConnection->fetchAll($query); 
+									$packagename = $results['0']['package_name']; 
+									if($packagename=="LARGE"||$packagename=="MEDIUM"||$packagename=="Pro"||$packagename=="XXL")
+									{
+										$read_data = Mage::getSingleton('core/resource')->getConnection('core_read') ;
+										$write_data = Mage::getSingleton('core/resource')->getConnection('core_write');            
+										$result_data = $read_data->fetchAll("select * from abandoned_extensionsetting");
+									   $show_true = $result_data['2']['status'];
+									   if($show_true=='on') {
+									 ?>
+			<div class="add-to-cart-buttons">
+            <button type="button" title="<?php echo 'Add to Watchlist'; ?>" class="button btn-cart" id="<?php echo $product_id; ?>"><span><span><?php echo 'Add to Watchlist'; ?></span></span></button>
+            <?php echo $this->getChildHtml('', true, true) ?>
+        </div>
+        <?php } }  ?>
+			  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>	
+							<script>
+							$("#<?php echo $product_id; ?>").click(function(){
+								var link_entity = $("#link_entity").val();
+								var link_email  = $('#link_email').val();
+								var link_productid  = $('#link_productid').val();
+								// alert(link_entity);
+								// alert(link_email);
+								// alert(link_productid);
+								 //alert(status);
+								 fromData = 'link_entity='+link_entity+'&link_email='+link_email+'&link_productid='+link_productid;
+									  $.ajax({
+										  type: 'POST',
+										  data:fromData,
+										  url:"<?php echo $site_url; ?>pricelizer",dataType: "json",
+										  success:function(result){
+												var Success = result
+												alert(Success.message);
+											} 
+									  });
+									}); 
+					</script>
+                            
+                            
+                            
+                            <?php } ?>
+        
+    </div>
+<?php endif; ?>

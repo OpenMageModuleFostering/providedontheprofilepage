@@ -1,0 +1,1558 @@
+<?php
+    /**
+    * Magento
+    *
+    * NOTICE OF LICENSE
+    *
+    * This source file is subject to the Academic Free License (AFL 3.0)
+    * that is bundled with this package in the file LICENSE_AFL.txt.
+    * It is also available through the world-wide-web at this URL:
+    * http://opensource.org/licenses/afl-3.0.php
+    * If you did not receive a copy of the license and are unable to
+    * obtain it through the world-wide-web, please send an email
+    * to license@magentocommerce.com so we can send you a copy immediately.
+    *
+    * DISCLAIMER
+    *
+    * Do not edit or add to this file if you wish to upgrade Magento to newer
+    * versions in the future. If you wish to customize Magento for your
+    * needs please refer to http://www.magentocommerce.com for more information.
+    *
+    * @category    design
+    * @package     default_default
+    * @copyright   Copyright (c) 2014 Magento Inc. (http://www.magentocommerce.com)
+    * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+    */
+
+?>
+<?php
+    /**
+    * @var $this Mage_Currencysymbol_Block_Adminhtml_System_Currencysymbol
+    */
+?>
+<style>
+    .grid h1.title-name{font-size:14px; text-transform:capitalize; float:left;margin-right:10px;}
+    .invite_link{font-weight:bold; text-decoration:none;}
+    .invite_link:hover{font-weight:bold; text-decoration:underline;}
+    .purche-remind{ color: #337ab7; }
+    .purche-remind:hover{ color: #2e6da4; }
+    a.price_alert {
+        background: #EA7601;
+        color: #FFFFFF;   
+        margin-bottom: 10px;
+        padding: 5px 10px;
+        text-align: right;
+        text-decoration: none; border-radius:5px;
+    }
+    a.price_alert:hover{color: #FFFFFF; background:orange;} 
+    .email_send{color:#66a202;}
+    .email_not_send{color:#ff0000;}
+    table.data td{font-size:0.9em;}
+    .cont-mang{
+        width: 100%;
+        float: left;
+    }
+    a.for-hover:hover{ background:none repeat scroll 0 0 rgba(68, 161, 205, 0.6)!important; }
+    .data input[type="text"]{
+        width: 80%;
+    }
+    .grid {
+        float: left;
+        width: 100%;
+    }
+    .app-title-name{text-align:center; padding:10px; /*font-size:24px;*/ color:#eb5e00;}
+
+    .click-price{width:100%; height:30px; text-align:center;}
+
+    .setting-from{ width:250px; margin:0px auto; height:50px;}
+    .setting-from .man{ width:100px; float:left; font-size:14px;}
+    .setting-from .auto{ width:100px; float:left; font-size:14px;}
+    .form_content {
+        border: 1px solid #EB5E00;
+        box-shadow: 0 0 3px #DDDDDD;
+        padding: 30px;
+        text-align: center;
+
+
+    }
+    .form_content input {
+        height: 40px;
+        margin-bottom: 10px;
+        width: 100%;
+
+    }
+    .form_content button {
+        padding:10px;
+    }
+    .align_center{
+        margin:0 auto;
+        width:30%;
+        margin-top:90px;
+        text-align:center;
+
+    }
+    .align_center h2{
+        color:#EB5E00;
+    }
+    .setting-from .man {
+        float: left;
+        font-size: 14px;
+        width: 100%;
+    }
+    .setting-from .auto {
+        float: left;
+        font-size: 14px;
+        font-weight: bold;
+        margin-top: 4px;
+        width: auto;
+        margin-left:76px;
+    }
+    .setting-from {
+        height: 50px;
+        margin: 0 auto;
+        width: 330px;
+    }
+    .man > h3{
+        float: left;
+        margin-right: 10px;
+    }
+    .man .auto label{ margin-left: 5px; }
+    .btn_manage{
+        text-align:center;
+    }
+    .btn_manage select{
+        width:200px;
+        height:20px;
+        margin-bottom:5px;
+    }
+    .btn_align{
+        text-align:center;
+    }
+    #set_form{margin-top:5px;}
+</style>
+<style type="text/css">
+    .white_content {
+        background-color: #ffffff;
+        border: 5px solid ;
+        height: 50%;
+        left: 25%;
+        max-height: 500px;
+        overflow: auto;
+        padding: 13px 15px;
+        position: fixed;
+        top: 20%;
+        width: 50%;
+        z-index: 1008; 
+        display:none;
+    }
+    .close-btn
+    {
+        font-size:20px;
+        float:right;
+    }
+
+
+    .pagination {
+        border-radius: 4px;
+        display: inline-block;
+        margin: 0px;
+        padding-left: 0;
+    }
+    .pagination > li {
+        display: inline;
+    }
+
+    .pagination > li:first-child > a, .pagination > li:first-child > span {
+        border-bottom-left-radius: 4px;
+        border-top-left-radius: 4px;
+        margin-left: 0;
+    }
+
+    .pagination > li, .pagination > li > span {
+        background-color: #fff;
+        border: 1px solid #ddd;
+        color: #428bca;
+        float: left;
+        line-height: 1.42857;
+        margin-left: -1px;
+        padding: 6px 12px;
+        position: relative;
+        text-decoration: none;
+    }
+
+
+
+    .page{ 
+        /*float:left;*/
+        background-color:  transparent /*#fff*/;
+        border: none;
+        color: #000;	
+        line-height: 1.42857;
+        margin-left: -1px;
+        padding: 6px 12px;
+        position: relative;
+        text-decoration: none;
+        text-align: center;
+    }  
+    .centrick{width:275px; margin:0px auto;} 
+    .centrick:after{clear:both;}
+    #img_link{height:150px;}
+</style>
+
+<?php
+    $read_data = Mage::getSingleton('core/resource')->getConnection('core_read') ;
+    $write_data = Mage::getSingleton('core/resource')->getConnection('core_write'); 
+    $logo_src = Mage::getDesign()->getSkinUrl('images/',array('_area'=>'frontend/rwd'));
+    $remove_base = $logo_src.'logo.gif';
+    $logo_url_data = str_replace('/base','',$remove_base);
+    $logo_url = $img_logo;
+    $store_url = Mage::getBaseUrl();
+    $site_name_mag = Mage::app()->getStore()->getFrontendName();
+    $site_name_magento = '<a href="'.$store_url.'" style="color:white">'.$site_name_mag.'</a>';
+    $this->getSkinUrl('images/powered-by-pricelizer.png',array('_secure'=>true));
+    $getResult = $read_data->fetchAll("select * from Abandon_cart_licensekey"); 
+    $lisc_key = $getResult['0']['license_key'];
+    $loginUrl = 'http://www.pricelizer.com/webService/getLogo?liscence_key='.$lisc_key.'';
+    $agent= 'Mozilla/5.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; .NET CLR 1.0.3705; .NET CLR 1.1.4322)';
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); 
+    curl_setopt($ch, CURLOPT_URL,$loginUrl);
+    curl_setopt($ch, CURLOPT_USERAGENT, $agent);
+    $result=curl_exec($ch);
+    curl_close($ch);
+    $result=json_decode($result);
+    $customer_logo =  $result->{'logo'}; // 12345
+    $img_logo = '<img src="'.$customer_logo.'">';
+
+
+?>
+
+<?php 
+
+    // Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN);
+    //echo $this->getSkinUrl('images/logo.gif', array('_secure'=>true));
+    $smtp = Mage::getBaseDir().'/smtp/class.phpmailer.php';
+    $smtp2 = Mage::getBaseDir().'/smtp/class.smtp.php';
+    include($smtp); ?>
+<?php include($smtp2); ?>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script> jQuery.noConflict(); </script>
+<?php  
+
+    $result10 = $read_data->fetchAll("select * from Abandon_cart_licensekey"); 
+    $footer_img = $read_data->fetchAll("select * from core_config_data"); 
+
+    $magento_footer_icon = $footer_img['101']['value'];
+    $logo_src = Mage::getDesign()->getSkinUrl('',array('_area'=>'frontend/rwd'));
+    $logo_url_data = str_replace('/base','',$magento_footer_icon);
+    //echo $pricelizer_link = '<img src="'.$logo_src.$logo_url_data.'">';
+
+
+    $registered_user_email = $result10['0']['user_email'];
+    $registered_user_license_key = $result10['0']['license_key'];
+    echo '<input type="hidden" id ="reg_user_email" value="'.$registered_user_email.'">';
+    echo '<input type="hidden" id ="reg_user_lkey" value="'.$registered_user_license_key.'">';
+?> 
+<input type="hidden" id ="mage_find" value="<?php echo Mage::helper("greenmodule")->find_mage(); ?>">
+<?php 
+    $read4 = Mage::getSingleton('core/resource')->getConnection('core_read') ;
+    $write4 = Mage::getSingleton('core/resource')->getConnection('core_write'); 
+    $result5 = $read4->fetchAll("SELECT * FROM log_url_info where url_id ='14'"); 
+    $result_data = $read4->fetchAll("select * from abandoned_extensionsetting");
+    //print_r($result_data);
+    $base_url = $result5['0']['url'];
+    if ($result_data['6']['status'] == 'yes')
+    { 
+    ?>				
+    <script>           
+        jQuery(document).ready(function(){
+            jQuery(window).load(function() {
+                var reg_user_email = jQuery('#reg_user_email').val();
+                var reg_user_lkey = jQuery('#reg_user_lkey').val();
+                var mage_find = jQuery('#mage_find').val();
+                fromData = 'reg_user_email='+reg_user_email+'&reg_user_lkey='+reg_user_lkey+'&mage_find='+mage_find;
+                jQuery.ajax({
+                    type: 'POST',
+                    data:fromData,
+                    url:"http://localhost/magento19/package_setting.php",
+                    success:function(result){
+                        var obj = jQuery.parseJSON(result);
+                        var user_id =obj.data.user_id;
+                        var package_type = obj.data.package_name;
+                        jQuery("#user_id").val(user_id);
+                        jQUery("#pack_name").val(package_type);
+
+                    }
+                });
+
+
+
+
+            }); 
+        });
+    </script>
+    <?php } ?>  
+<input type="hidden" value ="" id="user_id" name ="reg_id">
+<input type ="hidden" value ="" id ="pack_name" name ="pur_ext">  
+<div class="content-header">
+    <?php echo '<h3 class="icon-head head-report-shopcart-abandoned">Abandoned carts</h3>'; ?>
+    <table cellspacing="0">
+        <tr>
+            <!--<td style="width:50%;"><h3 class="icon-head head-system-currency"><?php echo $this->getHeader() ?></h3></td>
+            <td class="form-buttons"> -->
+            <?php
+                echo $this->getSaveButtonHtml();
+            ?>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<?php
+    $read_data = Mage::getSingleton('core/resource')->getConnection('core_read') ;
+    $write_data = Mage::getSingleton('core/resource')->getConnection('core_write'); 
+    $result_data = $read_data->fetchAll("select * from Abandon_cart_licensekey"); 
+    //print_r($result_data);
+    $user_email = $result_data['0']['user_email'];
+    $license_key = $result_data['0']['license_key'];
+    $start_date = $result_data['0']['start_date'];
+    $end_date = $result_data['0']['end_date'];
+    $duration_type = $result_data['0']['duration_type'];
+    $packagename = $result_data['0']['package_name'];
+    $current_date = Mage::getModel('core/date')->date('Y-m-d');
+    $items = Mage::getModel('sales/order')->getCollection()
+    ->join(array('item' => 'sales/order_item'), 'main_table.entity_id = item.order_id')
+    ->addFieldToFilter('customer_id', $customerId);
+    if($license_key!="") 
+    {
+
+    ?> 
+
+    <?php $this->getCurrencySymbolsData();?>     
+
+
+    <?php if($packagename=="LARGE"||$packagename=="MEDIUM"||$packagename=="Pro"||$packagename=="XXL"||$packagename=="Flex") { ?>
+
+
+
+
+        <!------------------------------------End total number of users------------------------->
+
+
+        <div class="click-price">
+        <a href ='./?user_email_all=true' class='price_alert'>Click to Invite all abandoned cart users to receive price alerts</a>
+        </div>
+        <?php } ?>
+
+    <?php 
+        $read4 = Mage::getSingleton('core/resource')->getConnection('core_read') ;
+        $write4 = Mage::getSingleton('core/resource')->getConnection('core_write'); 
+        $result5 = $read4->fetchAll("SELECT * FROM log_url_info where url_id ='14'"); 
+        //print_r($result5);
+        $base_url = $result5['0']['url'];
+
+    ?>
+    <div id="mybox">
+
+    </div>
+
+
+
+    <script>
+    jQuery(document).ready(function(){
+    jQuery("#send_api").click(function(){
+    var fbapi    = jQuery('#fbkey').val();
+    var mage_find = jQuery('#mage_find').val();
+    //alert(day);
+    //alert(status);
+    formData = '&fbkey='+fbapi+'&mage_find='+mage_find;
+    jQuery.ajax({
+    type: 'POST', 
+    data:formData,
+    url:"<?php echo $base_url;  ?>app/design/adminhtml/default/default/template/Abandoncart/socialmedia.php",dataType: "json",
+    success:function(result){
+    var Success = result
+    alert(url);
+    alert(Success.message);
+    }
+    });
+    }); 
+    });
+    </script>
+
+    <?php
+
+
+        //------------------------------------------------------------Scan all Abandon Cart Product---------------------------------------------//
+        $read1 = Mage::getSingleton('core/resource')->getConnection('core_read') ;
+        $write1 = Mage::getSingleton('core/resource')->getConnection('core_write'); 
+        $result1 = $read1->fetchAll("select * from abandon_cart where id ='1'"); 
+        //print_r($result1);
+        $status_abandon = $result1['0']['abandon_status'];
+        $status_day = $result1['0']['day'];
+        $status_date = $result1['0']['date'];
+        //echo $status_day;
+
+        //	$rec_count = 1;
+        //$product1 = Mage::getModel('reports/quote_collection')->GetCollection();
+        $count_data = $read1->fetchAll('select count(customer_id) from sales_flat_quote');
+        //print_r($count_data);
+        //	$rec_count = $product1->getSelect()->limit(20);
+        //echo 'sdf'.$rec_count;
+        //$rec_count = $product1->count();
+        $collection1 = Mage::getResourceModel('reports/quote_collection');
+        $collection1->prepareForAbandonedReport();
+
+        $rec_count = $collection1->count();
+        $emailArr=array();
+
+        //$page = $_GET{'page'} + 1;
+        if(!isset($_GET{'page'}) ||  $_GET{'page'} == 0)
+        {
+            $page =1;		
+        }else
+        {
+            $page = $_GET{'page'};
+        }
+        $pageFrame = 3;
+        //echo 'pageno->'.$page;
+
+        $limit = $_GET['folder'];
+        $offset = $limit * ($page-1);
+        if($rec_count%2==0)
+        {
+            $total=$rec_count/$limit;
+        }
+        else
+        {
+            $total_odd=$rec_count/$limit;
+            $total=$total_odd +1 ;
+        }
+
+
+        $collection = Mage::getResourceModel('reports/quote_collection');
+        $collection->prepareForAbandonedReport();
+
+        $collection->getSelect()->limit($offset,$limit); 
+
+        //$collection->reset();
+        $collection->getSelect()->limit($limit,$offset);
+        //$output = $collection->load()->toArray();
+
+        // echo $left_rec = $rec_count - ($page * $rec_limit);
+
+
+        $i=0;
+        foreach($collection->load()->toArray() as $key=>$user_detail)
+        {
+            $details=$user_detail;
+            foreach($user_detail as $key=>$user_email)
+            {
+
+                //echo $user_email['email'];
+                //$emailArr[$key] ['email']=  $user_email['email'];
+                //$emailArr[$key] ['entity_id']=  $user_email['entity_id'];
+            }
+
+        }
+
+        //echo '<pre>';print_r($details);
+
+
+        foreach ($details as $key=>$val)
+
+        {
+
+
+            $emailArr[$key] ['email']=  $val['email'];
+            $emailArr[$key] ['entity_id']=  $val['entity_id'];
+            $emailArr[$key] ['customer_id']=  $val['customer_id'];		
+            //echo '<h1 style="font-size:20px;">'. $val['customer_name'].'</h1>';
+            $read = Mage::getSingleton('core/resource')->getConnection('core_read') ;
+            $write = Mage::getSingleton('core/resource')->getConnection('core_write'); 
+            $result = $read->fetchAll("select * from sales_flat_quote_item where quote_id ='".$val['entity_id']."'");
+
+            echo '<div class="grid">';
+            echo '<h1 class="title-name">'. $val['customer_name'].'</h1>';
+        ?>
+        <a href = "javascript:void(0)" class="button" onclick = "document.getElementById('light_<?php echo $val["customer_id"]; ?>').style.display='block';">View details</a>
+        <?php $subscription_status = $read->fetchall("SELECT * FROM Abandoned_email_subscription where customer_id ='".$val['customer_id']."'");
+        ?>
+
+        <!--------------------------------Subscribe functionality------------------------------------------>
+
+        <input type="hidden" id="customer_name_<?php echo $val['customer_id'];  ?>" value="<?php echo $val['customer_name']; ?>">
+        <input type="hidden" id="customer_email_<?php echo $val['customer_id'];  ?>" value="<?php echo $val['email'];  ?>">
+        <input type="hidden" id="customer_id_<?php echo $val['customer_id'];  ?>" value="<?php echo $val['customer_id'];  ?>">
+
+        <?php  if($subscription_status['0']['subscribe_status'] ==""||$subscription_status['0']['subscribe_status'] =="yes"){ ?>
+            &nbsp;&nbsp;<button id ="unsub_<?php echo $val['customer_id']; ?>">Disable price alerts</button>
+            <script>
+            jQuery(document).ready(function(){
+            jQuery("#unsub_<?php echo $val['customer_id']; ?>").click(function(){
+            var customer_email = jQuery("#customer_email_<?php echo $val['customer_id'];  ?>").val();
+            var customer_name    = jQuery('#customer_name_<?php echo $val['customer_id'];  ?>').val();
+            var customer_id = jQuery('#customer_id_<?php echo $val['customer_id'];  ?>').val();
+            var mage_find = jQuery('#mage_find').val();
+            fromData = 'customer_email='+customer_email+'&customer_name='+customer_name+'&customer_id='+customer_id+'&mage_find='+mage_find;
+            jQuery.ajax({
+            type: 'POST',
+            data:fromData,
+            datatype:'json',
+            url:"http://localhost/magento19/unsubscribe.php", 
+            success:function(result){
+            var Success = result;
+            alert(result);
+            location.reload();
+            // $('#img_link').src(); 
+            jQuery("#img_link").attr("src", result);
+
+            }
+            });
+            }); 
+            });
+            </script>
+
+            <!--------------------------------End Subscribe functionality------------------------------------------>
+
+
+            <?php } else { ?>
+
+            <!--------------------------------UnSubscribe functionality------------------------------------------>		
+
+            &nbsp;&nbsp;<button id ="subs_<?php echo $val['customer_id']; ?>">Send customer price alert invitation</button>
+
+            <script>
+            jQuery(document).ready(function(){
+            jQuery("#subs_<?php echo $val['customer_id']; ?>").click(function(){
+            var customer_email = jQuery("#customer_email_<?php echo $val['customer_id'];  ?>").val();
+            var customer_name    = jQuery('#customer_name_<?php echo $val['customer_id'];  ?>').val();
+            var customer_id = jQuery('#customer_id_<?php echo $val['customer_id'];  ?>').val();
+            var mage_find = jQuery('#mage_find').val();
+            //alert(customer_email);
+            //alert(status);
+            fromData = 'customer_email='+customer_email+'&customer_name='+customer_name+'&customer_id='+customer_id+'&mage_find='+mage_find;
+            jQuery.ajax({
+            type: 'POST',
+            data:fromData,
+            datatype:'json',
+            url:"/subscribe.php",
+            success:function(result){
+            var Success = result;
+            alert(result);
+            location.reload();
+            // $('#img_link').src(); 
+            jQuery("#img_link").attr("src", result);
+
+            }
+            });
+            }); 
+            });
+            </script>
+
+            <?php } ?>
+
+        <!---------------------------EndUnSubscribe functionality------------------------------------------>
+
+        <div id="light_<?php echo $val['customer_id']; ?>" class="white_content">
+        <div class="col-full"><a href="javascript:void(0)" onclick="document.getElementById('light_<?php echo $val["customer_id"]; ?>').style.display='none';document.getElementById('fade').style.display='none'" class="close-btn">X</a></div>
+        <table>
+        <h1><?php echo $val['customer_name'];?></h1>	
+        <tr><td>Customer Name</td><td><?php echo $val['customer_name'];?></td></tr>
+        <tr><td>Customer Id</td><td><?php echo $val['customer_id'];?></td></tr>
+        <tr><td>First Name</td><td><?php echo $val['customer_firstname'];?></td></tr>
+        <tr><td>Last Name</td><td><?php echo $val['customer_lastname'];?></td></tr>
+        <tr><td>Email</td><td><?php echo $val['email'];?></td></tr>
+        <tr><td>Gender</td><td><?php echo $val['customer_gender'];?></td></tr>
+        <tr><td>Customer Dob</td><td><?php echo $val['customer_dob'];?></td></tr>
+
+        </table>
+
+        </div>
+        <?php
+            echo '<div class="hor-scroll">';
+            echo '<table cellspacing="0" class="data" id="gridAbandoned_table">';
+            echo '<thead>';
+            echo '<tr class="headings">';
+            echo '<th class="no-link"><span class="nobr">User Name:</span></th>';
+            echo '<th class="no-link"><span class="nobr">Product Name:</span></th>';
+            echo '<th class="no-link"><span class="nobr">Quantity:</span></th>';
+            echo '<th class="no-link"><span class="nobr">SKU:</span></th>';  
+            echo '<th class="no-link"><span class="nobr">Price</span></th>';
+            echo '<th class="no-link"><span class="nobr">Date</span></th>';
+            echo '<th class="no-link"><span class="nobr">Day</span></th>';
+            if($packagename=="LARGE"||$packagename=="MEDIUM"||$packagename=="Pro"||$packagename=="XXL"||$packagename=="Flex") { 
+                echo '<th class="no-link"><span class="nobr">Email Status</span></th>';
+            }
+            echo '</tr>';
+            echo '</thead>';
+            echo '<tbody>';
+
+
+            $prod_arr = array();
+            $products=array();
+            $i=0;
+            foreach($result as $data_data)
+            {
+                $products[]=  $data_data['product_id'];
+                //echo '<pre>';print_r($data_data);
+
+                echo '<tr class="even pointer">';
+                echo '<td>'.$val['firstname'].'</td>';
+                //echo 'test=>'.$val['entity_id'];
+                echo '<td>'.$data_data['name'].'</td>';
+                echo '<td>'.$data_data['qty'].'</td>';
+                echo '<td>'.$data_data['sku'].'</td>'; 
+                echo '<td>'.$data_data['price'].'</td>';
+                echo '<td>'.$data_data['created_at'].'</td>';
+
+                $date1=date_create($data_data['created_at']);
+                $date2=date_create($status_date);
+                $diff=date_diff($date1,$date2);
+                echo '<td>'.$diff->format("%a").'</td>'; ?>
+            <?php
+                $read2 = Mage::getSingleton('core/resource')->getConnection('core_read') ;
+                $write2 = Mage::getSingleton('core/resource')->getConnection('core_write'); 
+                $result2 = $read2->fetchAll("select abandon_email_status from Abandon_added_product where added_user_id ='".$val['customer_id']."' AND added_prod_id ='".$data_data['product_id']."' "); 
+
+                if($packagename=="LARGE"||$packagename=="MEDIUM"||$packagename=="Pro"||$packagename=="XXL"||$packagename=="Flex")
+                {
+                    if(!empty($result2))
+                    {
+                        foreach($result2 as $email_val)
+                        {
+                            //echo  $abandon_email_status = $email_val['abandon_email_status'];
+                            //$abandon_user_email[] = $abandon_email_status;
+                            //echo '<br>';
+                            if($email_val['abandon_email_status']=='0')
+                            {
+                                echo "<td><span class='email_send'>Email Sent</span></td>";
+                            }else{
+                                echo "<td><span class='email_not_send'>Not Sent</span></td>";
+                            }
+
+                        }
+                    }else{
+                        echo "<td><span class='email_not_send'>Not Sent</span></td>";
+
+                    }
+                }	  
+            ?>
+
+
+            <?php
+                $noofday[]= $diff->format("%a");
+                $name[] = $data_data['name'];
+                $qty[] = $data_data['qty'];
+                $sku[] = $data_data['sku'];
+                $price[] = $data_data['price'];
+                $created_at[] = $data_data['created_at'];
+                $s1_name = serialize($name);
+                $s1_qty = serialize($qty);
+                $s1_sku = serialize($sku);
+                $s1_price = serialize($price);
+                $s1_created_at = serialize($created_at);
+
+                $cron_mail[] = $val['email'];
+                //echo $val['entity_id'];
+                //$entity_id[] = $val['entity_id'];
+
+                $val['customer_id'];
+                $val['entity_id'];
+                $prod_arr[$i] = array('customer_id'=>$val['customer_id'],'entity_id'=>$val['entity_id']);
+                $i++;
+            }
+            $emailArr[$key]['product_id']=implode(',',$products);
+            //echo $val['email'];
+
+            $abandon_arr = array();
+            $abandon_arr['email'] = $val['email']; 
+            $abandon_arr['products'] = $prod_arr;
+            $abandonurl = urlencode(json_encode($abandon_arr));
+            $items=implode(",",$products);
+            echo '</tr>';
+            if($packagename=="LARGE"||$packagename=="MEDIUM"||$packagename=="Pro"||$packagename=="Flex")
+            {
+                echo '<tr>'; 
+                echo '<td colspan="8"><a href ="./?activate='.$val['email'].'&entity_id='. $val['entity_id'].'&customer_id='.$val['customer_id'].'&item_id='.$items.'" class="invite_link">';
+            ?>
+            <?php
+                $subscription_status = $read->fetchall("SELECT * FROM Abandoned_email_subscription where customer_id ='".$val['customer_id']."'");        
+                $extension_setting = $read->fetchAll("select * from abandoned_extensionsetting");
+                if($extension_setting['9']['status']=='on')
+                {
+                    if($subscription_status['0']['subscribe_status']!='no')
+                    {
+
+
+                        if($result2['0']['abandon_email_status'] == '0')
+
+                        {
+                            echo '<div class="email_send">Invite sent, click here will send the invite again</div>';
+
+                        }
+                        else
+
+                        {
+                            echo 'Invite user to auto-setup price alerts';
+                        }
+
+
+                    }
+
+
+                    else
+
+                    {   echo '</a>';
+                        echo 'The customer has chosen to NOT activate Pricelizer.';
+
+                    }
+                }
+
+                echo '</a>';
+                if($extension_setting['5']['status']=='yes')
+                {
+                    echo '&nbsp;&nbsp;<a href ="./?pur_reminder='.$val['email'].'&entity_id='. $val['entity_id'].'&customer_id='.$val['customer_id'].'&item_id='.$items.'" class="invite_link purche-remind">Purchase Reminder</a>';
+                }
+            ?>
+            </td>
+
+            <?php
+                echo '</tr>';
+            }
+            echo '</tbody>';
+            echo '</table>';   
+            echo '</div>';
+            echo '</div>';  
+
+        }
+
+    ?>
+
+    <?php  $hostlink =  'www.'.$_SERVER['HTTP_HOST']; ?>
+    <!---------------------------------------------------------Pagination View------------------------------->
+
+    <?php $mainurl =  Mage::getBaseUrl(); 
+        $modified_url_link = str_replace("/index.php/"," ",$mainurl);
+        $modified_url = '<a href="'.$modified_url.'">'.$hostlink.'</a>';
+
+    ?>   
+
+    <!---------------------------------------------------------EndPagination View------------------------------->
+    <?php
+        echo '<div class="centrick">';
+
+        echo '<div class="page">Page'.$page.'</div>';
+        $html .= '<ol class="pagination">';
+        if(isset($page) && $page != 1){
+            $start = $page - 1;                                        
+            $end = $start + $pageFrame;
+        }
+        /*   if($end > $rec_count){
+        $start = $rec_count - ($pageFrame-1);
+        }else{
+        $rec_count = $end-1;
+        }
+        echo 'cc'.$rec_count.'cc';*/
+        for($i = $start; $i<=$total; $i++)
+        {
+            if($i >= 1){
+                if($page){
+                    $html .= ($page == $i) ? '<li class="current">'. $i .'</li>' : '<li><a href="'.$url.'?page='.$i.'">'. $i .'</a></li>';
+                }else{
+                    $html .= ($i == 1) ? '<li class="current">'. $i .'</li>' : '<li><a href="'.$url.'?page='.$i.'">'. $i .'</a></li>';
+                }
+            }
+
+        }
+
+        $html .= '</ol>';
+
+
+    ?>
+    <?php echo $html; ?>   
+    <br>
+    <div style="clear:both;"></div>
+    <h3 class="app-title-name">Select customers per page</h2>
+    <select name ="dayinterval" id ="myselect" style ="margin:0px auto;display:block">
+    <option><?php if($_GET['folder']=="") { echo '10';} else { echo $_GET['folder']; }  ?></option>
+    <option value ="10">10</option>
+    <option value ="25">25</option>
+    <option value ="50">50</option>
+    <option value ="100">100</option>
+    </select>
+    <script>
+    jQuery(document).ready(function(){
+    jQuery('#myselect').change(function () {
+    var data = jQuery('#myselect').val();
+    var newURLString = window.location.href + 
+    "?folder=" + jQuery('#myselect').val();
+    window.location.href = newURLString;
+    });
+    });
+    </script>  
+    <?php
+        echo '</div>';?>
+
+
+
+
+
+    <?php
+        //------------------------------------------------------------End Scan all Abandon Cart Product---------------------------------------------//
+
+        $base_url = Mage::getBaseUrl();
+        //--------------------------------------------------------Send user email------------------------------------------------------------//
+
+        $read1 = Mage::getSingleton('core/resource')->getConnection('core_read') ;
+        $write1 = Mage::getSingleton('core/resource')->getConnection('core_write'); 
+        $result1 = $read1->fetchAll("select * from abandon_cart where id ='1'"); 
+        //print_r($result1);
+        $status_abandon = $result1['0']['abandon_status'];
+        $status_day = $result1['0']['day'];
+        $status_date = $result1['0']['date'];
+
+        $log_url  = $read1->fetchAll("SELECT * FROM log_url_info where url_id ='14'"); 
+        $base_site_url = $log_url['0']['url'];
+
+        //echo $status_day;
+        if($status_abandon == '0')
+        {
+
+            if(isset($_GET['activate']))
+            {
+
+
+                $result_data = $read1->fetchAll("select * from abandoned_extensionsetting");
+                //echo '<pre>';print_r($result_data);		
+                $get_id = $_GET['d'];
+                $explode_name = explode('=',$_GET['d']);
+                $uname = $explode_name['1'];
+                $email = $_GET['activate'];
+                $mail   = new PHPMailer; // call the class
+                $mail->IsSMTP();
+                $mail->SMTPSecure = "";
+                //$mail->SMTPDebug  = 2;  
+                $mail->Host = 'c4072.sgvps.net'; // platinum.waxspace.com Hostname of the mail server
+                $mail->Port = '587'; //Port of the SMTP like to be 25, 80, 465 or 587
+                $mail->SMTPAuth = true; //Whether to use SMTP authentication
+                $mail->Username = 'sara.johnsson@pricelizer.com';
+                $mail->Password = 'Tihwd100s'; //Password for SMTP authentication
+                //$mail->AddReplyTo("admin@quiconnaitunbon.com.com", "Admin"); //reply-to address
+                $mail->SetFrom("karl.lillrud@maneer.se"); //From address of the mail 
+                //$mail->SMTPSecure = "tls";
+                $link = "".$base_url."abandon/front/maildata/".'?entity_id='.$_GET['entity_id'].'&customer_id='.$_GET['customer_id'].'&item_id='.$_GET['item_id'];		
+                $cur_date = date("l d F ");
+                $customer_id =$_GET['customer_id']; // set this to the ID of the customer.
+                $customer_data = Mage::getModel('customer/customer')->load($customer_id);
+                $customer_name = $customer_data['firstname']; 	
+                $read = Mage::getSingleton('core/resource')->getConnection('core_read') ;
+                $write = Mage::getSingleton('core/resource')->getConnection('core_write'); 
+                $abandon_days = $read->fetchall("select * from abandon_cart");
+                $alert_days =  $abandon_days['0']['day'];
+                $getemaildata = $read->fetchall("select * from abandon_email_template");  
+                $firstname = "FIRSTNAME";
+                $site_url = "SITEURL";
+                $xdays    = "XDAYSFROMSETTINGS";
+                $unsubscribe_key = "UNSUBSCRIBE";
+                $date_data = "DATE";
+                $culogo    = "CULOGO";
+                $blank ="";
+
+                $unsubs_url_key = $base_url.'abandon/front/unsub/?unsubs='.$_GET['customer_id'];
+                $pstring = $getemaildata['0']['email_conetnt'];
+                $modifieddata =  str_replace($firstname,$customer_name,$pstring);
+                $modifieddata1 =  str_replace($site_url,$modified_url,$modifieddata);	
+                $modifieddata3 =  str_replace($xdays,$alert_days,$modifieddata1);
+                $modified_data1 = str_replace($date_data,$cur_date,$modifieddata3);
+                $modified_logo = str_replace($culogo,$img_logo,$modified_data1);
+                $modifieddata4 = str_replace($unsubscribe_key,$unsubs_url_key,$modified_logo);
+                $facebook = "FACEBOOK";
+                $linkedin = "LINKEDIN";
+                $twitter  = "TWITTER";
+                $google   = "GOOGLE"; 
+                $simple_signup = '1CLICKSIGNUP'; 
+                $sitename = 'SITENAME';
+                if($result_data['3']['status']=='yes')
+                    $pricelizerlink = 'PRICELIZERLOGO';
+                else $blank;
+
+                //$sitelogo = 'PRICELIZERLOGO';
+                //$facebook_key = "<a href =".$link."><img src ='".$base_site_url."skin/frontend/base/default/images/facebook.jpeg.png' style='width:24px; height:24px; margin-right:10px;' ></a>";
+                //$twitter_key =   "<a href =".$link."><img src ='".$base_site_url."skin/frontend/base/default/images/tweet.jpeg.png' style='width:24px; height:24px; margin-right:10px;' ></a>";
+                //$linkedin_key =  $message .= "<a href =".$link."><img src ='".$base_site_url."skin/frontend/base/default/images/linked.jpeg.png' style='width:24px; height:24px; margin-right:10px;' ></a>";
+                //$google_key = "<a href =".$link."><img src ='".$base_site_url."skin/frontend/base/default/images/google.jpeg.png' style='width:24px; height:24px; margin-right:0px;' ></a></td></tr>";
+                $signup_url = "<a href =".$link."  class='for-hover' style='color: #fff; background:#2f90e2; font-size:14px; padding:6px 14px; text-decoration:none; border:1px solid #fff; border-radius: 4px; box-shadow:3px 3px 3px #ccc; margin-bottom:10px; display:inline-block;'>1-Click Signup</a>";
+                //$signup_url = "<button type='button' onclick = 'window.location.href=".$link."'>1-Click Sign Up</button>";
+                $image_logo_footer = $this->getSkinUrl('images/powered-by-pricelizer.png',array('_secure'=>true));
+
+                if($result_data['4']['status']=='yes')
+                    $url_data = 'http://www..pricelizer.com';
+                else $url_data="//404notfound";
+                $pricelizer_link = "<a href ='http://www.pricelizer.com/'><img src ='".$image_logo_footer."'  alt='Powered by Pricelizer' ></a>"; 
+                $flink_url = "<a style='color:#989898;margin-left:10px; text-decoration:none;' href='http://staging.pricelizer.com'>Powered by Pricelizer</a>";
+                $modifieddata5 = str_replace($facebook,$facebook_key,$modifieddata4);
+                $modifieddata6 = str_replace($linkedin,$linkedin_key,$modifieddata5);
+                $modifieddata7 = str_replace($twitter,$twitter_key,$modifieddata6);
+                $signup_button = str_replace($google, $google_key,$modifieddata7);
+                $pricelizer_logo_link = str_replace($simple_signup,$signup_url,$signup_button);
+                $footer  = str_replace($footer_link,$flink_url,$pricelizer_logo_link);
+                $modifieddata2 = str_replace($pricelizerlink,$pricelizer_link,$footer);
+                $mail->Subject = "Abandoned Cart Alert"; //Subject od your mail
+                $mail->AddAddress($email, "fghgfhgfh"); //To address who will receive this email
+
+                //$to = "ajay010791@gmail.com";
+                //$subject = "Abandon Cart Alert"; 
+                $headers = "From: Abandon Cart Alert";   
+                $headers .= "Reply-To: ". ($to) . "\r\n";
+                $headers .= "CC: ajay.singh@webeneturetech.com";
+                $headers  = "MIME-Version: 1.0" . PHP_EOL; 
+                $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
+                $message = '<html><body>';
+                $message .= '<table rules="all" cellpadding="10" border="0" >';
+
+                $unsuburl  = "<a href ='".$unsubs_url_key."'><span style='color:#999'>click here</span></a>";
+                $message .= "</body></html>";	
+                $unsubs	="UNCLICK";
+                $entire_content_data =  str_replace($unsubs,$unsuburl,$modifieddata2);	 
+                $entire_content = str_replace($sitename,$site_name_magento,$entire_content_data);
+                $message .= $entire_content; 
+
+                $mail->MsgHTML($message); //Put your body of the message you can place html code here
+                $send = $mail->Send(); //Send the mails
+
+                if($send){ 
+                    echo "send"; 
+                }						  
+
+            }  			 
+            elseif(isset($_GET['pur_reminder']))
+            {
+
+                $result_data = $read1->fetchAll("select * from abandoned_extensionsetting");
+                //echo '<pre>';print_r($result_data);		
+                $get_id = $_GET['d'];
+                $explode_name = explode('=',$_GET['d']);
+                $uname = $explode_name['1'];
+                $email = $_GET['pur_reminder'];
+                $mail   = new PHPMailer; // call the class
+                $mail->IsSMTP();
+                $mail->SMTPSecure = "";
+                //$mail->SMTPDebug  = 2;  
+                $mail->Host = 'c4072.sgvps.net'; // platinum.waxspace.com Hostname of the mail server
+                $mail->Port = '587'; //Port of the SMTP like to be 25, 80, 465 or 587
+                $mail->SMTPAuth = true; //Whether to use SMTP authentication
+                $mail->Username = 'sara.johnsson@pricelizer.com';
+                $mail->Password = 'Tihwd100s'; //Password for SMTP authentication
+                //$mail->AddReplyTo("admin@quiconnaitunbon.com.com", "Admin"); //reply-to address
+                $mail->SetFrom("Contact@PriceLizer.com"); //From address of the mail 
+                //$mail->SMTPSecure = "tls";
+                $link = "".$base_url."abandon/front/maildata/".'?entity_id='.$_GET['entity_id'].'&customer_id='.$_GET['customer_id'].'&item_id='.$_GET['item_id'];	
+                $productId = $_GET['item_id'];
+                $explode_id = explode(',',$productId);
+
+                foreach($explode_id as $pr_idd)
+                {
+                    $product = Mage::getModel('catalog/product')->load($pr_idd);
+                    //echo '<pre>';print_r($product);
+                    $prr_name = $product->name;
+                    $productMediaConfig = Mage::getModel('catalog/product_media_config');
+                    $smallImageUrl = $productMediaConfig->getMediaUrl($product->getSmallImage());
+                    $prr_img ='<img src="'.$smallImageUrl.'" style="width:40px;height:60px; min-height:65px;">';
+                    $prr_details_data .= '<li style="list-style:none; padding:0;">'.$prr_img.'<br>'.$prr_name.'<br></li>';
+
+                }
+                $prr_details = '<ul style="display:inline-block; padding:0; width:100%; ">'.$prr_details_data.'</ul>';
+                $cur_date = date("l d F ");
+                $customer_id =$_GET['customer_id']; // set this to the ID of the customer.
+                $customer_data = Mage::getModel('customer/customer')->load($customer_id);
+                $customer_name = $customer_data['firstname']; 	
+                $read = Mage::getSingleton('core/resource')->getConnection('core_read') ;
+                $write = Mage::getSingleton('core/resource')->getConnection('core_write'); 
+                $abandon_days = $read->fetchall("select * from abandon_cart");
+                $alert_days =  $abandon_days['0']['day'];
+                $getemaildata = $read->fetchall("select * from abandon_email_template");  
+                $firstname = "FIRSTNAME";
+                $site_url = "SITEURL";
+                $xdays    = "XDAYSFROMSETTINGS";
+                $unsubscribe_key = "UNSUBSCRIBE";
+                $date_data = "DATE";
+                $culogo    = "CULOGO";
+                $blank ="";
+                $unsubs_url_key = $base_url.'abandon/front/unsub/?unsubs='.$_GET['customer_id'];
+                $pstring = $getemaildata['2']['email_conetnt'];
+
+                $product_id =$_GET['item_id'];
+                $explode_id = explode(',',$product_id);
+                foreach($explode_id as $item_id_data)
+                {
+                    $obj = Mage::getModel('catalog/product');
+                    $_product = $obj->load($item_id_data); 
+                    $_product->getName();
+                    $product_title[]  = $_product->getName();	
+                }
+                $product_key = "PRODUCTLIST";
+                $list_of_product .= implode('<br>',$product_title);
+                $product_search = str_replace($product_key,$prr_details,$pstring);
+                $modifieddata =  str_replace($firstname,$customer_name,$product_search);
+                $modifieddata1 =  str_replace($site_url,$modified_url,$modifieddata);	
+                $modifieddata3 =  str_replace($xdays,$alert_days,$modifieddata1);
+                $modified_data1 = str_replace($date_data,$cur_date,$modifieddata3);
+                $modified_logo = str_replace($culogo,$img_logo,$modified_data1);
+                $modifieddata4 = str_replace($unsubscribe_key,$unsubs_url_key,$modified_logo);
+                $facebook = "FACEBOOK";
+                $linkedin = "LINKEDIN";
+                $twitter  = "TWITTER";
+                $google   = "GOOGLE"; 
+                $simple_signup = '1CLICKSIGNUP'; 
+                if($result_data['3']['status']=='yes')
+                    $pricelizerlink = 'PRICELIZERLOGO';
+                else $blank;
+                if($result_data['4']['status']=='yes')
+                    $footer_link = "FLINK";
+                else $blank;
+                $sitename = 'SITENAME';
+
+                $signup_url = "<a href =".$link."  class='for-hover' style='color: #fff; background:#2f90e2; font-size:14px; padding:6px 14px; text-decoration:none; border:1px solid #fff; border-radius: 4px; box-shadow:3px 3px 3px #ccc; margin-bottom:10px; display:inline-block;'>1-Click Signup</a>";
+                //$signup_url = "<button type='button' onclick = 'window.location.href=".$link."'>1-Click Sign Up</button>";
+                if($result_data['4']['status']=='yes')
+                    $url_data = 'http://staging.pricelizer.com';
+                else $url_data="//404notfound";
+                $image_logo_footer = $this->getSkinUrl('images/powered-by-pricelizer.png',array('_secure'=>true));
+                $pricelizer_link = "<a href ='http://www.pricelizer.com/'><img src ='".$image_logo_footer."'  alt='Powered by Pricelizer' ></a>"; 
+                $flink_url = "<a style='color:#989898;margin-left:10px; text-decoration:none;' href='http://staging.pricelizer.com'>Powered by Pricelizer</a>";
+                $modifieddata5 = str_replace($facebook,$facebook_key,$modifieddata4);
+                $modifieddata6 = str_replace($linkedin,$linkedin_key,$modifieddata5);
+                $modifieddata7 = str_replace($twitter,$twitter_key,$modifieddata6);
+                $signup_button = str_replace($google, $google_key,$modifieddata7);
+                $pricelizer_logo_link = str_replace($simple_signup,$signup_url,$signup_button);
+                $footer  = str_replace($footer_link,$flink_url,$pricelizer_logo_link);
+                $modifieddata2 = str_replace($pricelizerlink,$pricelizer_link,$footer);
+                $mail->Subject = "Abandoned Cart Alert"; //Subject od your mail
+                $mail->AddAddress($email, "fghgfhgfh"); //To address who will receive this email
+
+                //$to = "ajay010791@gmail.com";
+                //$subject = "Abandon Cart Alert"; 
+                $headers = "From: Abandon Cart Alert";   
+                $headers .= "Reply-To: ". ($to) . "\r\n";
+                $headers .= "CC: ajay.singh@webeneturetech.com";
+                $headers  = "MIME-Version: 1.0" . PHP_EOL; 
+                $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
+                $message = '<html><body>';
+                $message .= '<table rules="all" cellpadding="10" border="0" >';
+
+                $unsuburl  = "<a href ='".$unsubs_url_key."'><span style='color:#999'>click here</span></a>";
+                $message .= "</body></html>";	
+                $unsubs	="UNCLICK";
+
+                $entire_content_data =  str_replace($unsubs,$unsuburl,$modifieddata2);
+                $useremailkey = 'USEREMAIL';
+                $get_user_email = str_replace($useremailkey,$email,$entire_content_data);
+                $entire_content = str_replace($sitename,$site_name_magento,$get_user_email);
+                $message .= $entire_content;
+                $mail->MsgHTML($message);
+                $send = $mail->Send(); 
+
+                if($send){ 
+                    echo "send"; 
+                }			
+
+            }
+
+
+        }
+
+        elseif($status_abandon == '1')
+        {
+
+            //echo  $to = $_GET['d'];
+            foreach($noofday as $valday){
+                if($valday== $status_day){
+                    foreach($emailArr as $cron_user_email) 
+                    {
+
+                        $result_data = $read1->fetchAll("select * from abandoned_extensionsetting");
+                        //echo '<pre>';print_r($result_data);		
+                        $get_id = $_GET['d'];
+                        $explode_name = explode('=',$_GET['d']);
+                        $uname = $explode_name['1'];
+                        $email = $cron_user_email['email'];
+                        #DebugBreak() ;
+                        $mail = new PHPMailer; // call the class
+                        $mail->IsSMTP();
+                        $mail->SMTPSecure = "";
+                        //$mail->SMTPDebug  = 2;  
+                        $mail->Host = 'ssl://smtp.gmail.com'; // platinum.waxspace.com Hostname of the mail server
+                        $mail->Port = '465'; //Port of the SMTP like to be 25, 80, 465 or 587
+                        $mail->SMTPAuth = true; //Whether to use SMTP authentication
+                        $mail->Username = 'keyurshah070@gmail.com';
+                        $mail->Password = 'keyur24892070'; //Password for SMTP authentication
+                        //$mail->AddReplyTo("admin@quiconnaitunbon.com.com", "Admin"); //reply-to address
+                        $mail->SetFrom("keyurshah070@gmail.com"); //From address of the mail 
+                        //$mail->SMTPSecure = "tls";
+                        $link = "".$base_url."abandon/front/maildata/".'?entity_id='.$_GET['entity_id'].'&customer_id='.$cron_user_email['customer_id'].'&item_id='.$cron_user_email['product_id'];		
+                        $cur_date = date("l d F ");
+                        $customer_id =$cron_user_email['customer_id']; // set this to the ID of the customer.
+                        $customer_data = Mage::getModel('customer/customer')->load($customer_id);
+                        $customer_name = $customer_data['firstname']; 
+                        $read = Mage::getSingleton('core/resource')->getConnection('core_read') ;
+                        $write = Mage::getSingleton('core/resource')->getConnection('core_write'); 
+                        $abandon_days = $read->fetchall("select * from abandon_cart");
+                        $alert_days =  $abandon_days['0']['day'];
+                        $getemaildata = $read->fetchall("select * from abandon_email_template");  
+                        $firstname = "FIRSTNAME";
+                        $site_url = "SITEURL";
+                        $xdays    = "XDAYSFROMSETTINGS";
+                        $unsubscribe_key = "UNSUBSCRIBE";
+                        $date_data = "DATE";
+                        $culogo    = "CULOGO";
+                        $blank ="";
+                        $unsubs_url_key = $base_url.'abandon/front/unsub/?unsubs='.$_GET['customer_id'];
+                        $pstring = $getemaildata['2']['email_conetnt'];
+
+                        $product_id =$cron_user_email['product_id'];
+                        $explode_id = explode(',',$product_id);
+                        foreach($explode_id as $item_id_data)
+                        {
+                            $obj = Mage::getModel('catalog/product');
+                            $_product = $obj->load($item_id_data); 
+                            $_product->getName();
+                            $product_title[]  = $_product->getName();	
+                        }
+                        $product_key = "PRODUCTLIST";
+                        $list_of_product .= implode('<br>',$product_title);
+                        $product_search = str_replace($product_key,$list_of_product,$pstring);
+                        $modifieddata =  str_replace($firstname,$customer_name,$product_search);
+                        $modifieddata1 =  str_replace($site_url,$modified_url,$modifieddata);	
+                        $modifieddata3 =  str_replace($xdays,$alert_days,$modifieddata1);
+                        $modified_data1 = str_replace($date_data,$cur_date,$modifieddata3);
+                        $modified_logo = str_replace($culogo,$img_logo,$modified_data1);
+                        $modifieddata4 = str_replace($unsubscribe_key,$unsubs_url_key,$modified_logo);
+
+                        $facebook = "FACEBOOK";
+                        $linkedin = "LINKEDIN";
+                        $twitter  = "TWITTER";
+                        $google   = "GOOGLE"; 
+                        $simple_signup = '1CLICKSIGNUP'; 
+                        if($result_data['3']['status']=='yes')
+                            $pricelizerlink = 'PRICELIZERLOGO';
+                        else $blank;
+                        if($result_data['4']['status']=='yes')
+                            $footer_link = "FLINK";
+                        else $blank;
+                        $sitename = 'SITENAME';
+
+
+
+                        //$sitelogo = 'PRICELIZERLOGO';
+                        //$facebook_key = "<a href =".$link."><img src ='".$base_site_url."skin/frontend/base/default/images/facebook.jpeg.png' style='width:24px; height:24px; margin-right:10px;' ></a>";
+                        //$twitter_key =   "<a href =".$link."><img src ='".$base_site_url."skin/frontend/base/default/images/tweet.jpeg.png' style='width:24px; height:24px; margin-right:10px;' ></a>";
+                        //$linkedin_key =  $message .= "<a href =".$link."><img src ='".$base_site_url."skin/frontend/base/default/images/linked.jpeg.png' style='width:24px; height:24px; margin-right:10px;' ></a>";
+                        //$google_key = "<a href =".$link."><img src ='".$base_site_url."skin/frontend/base/default/images/google.jpeg.png' style='width:24px; height:24px; margin-right:0px;' ></a></td></tr>";
+                        $signup_url = "<a href =".$link."  class='for-hover' style='color: #fff; background:#2f90e2; font-size:14px; padding:6px 14px; text-decoration:none; border:1px solid #fff; border-radius: 4px; box-shadow:3px 3px 3px #ccc; margin-bottom:10px; display:inline-block;'>1-Click Signup</a>";
+                        //$signup_url = "<button type='button' onclick = 'window.location.href=".$link."'>1-Click Sign Up</button>";
+                        if($result_data['4']['status']=='yes')
+                            $url_data = 'http://staging.pricelizer.com';
+                        else $url_data="//404notfound";
+                        $image_logo_footer = $this->getSkinUrl('images/powered-by-pricelizer.png',array('_secure'=>true));
+                        $pricelizer_link = "<a href ='http://www.pricelizer.com/'><img src ='".$image_logo_footer."' alt='Powered by Pricelizer' ></a>"; 
+                        $flink_url = "<a style='color:#989898;margin-left:10px; text-decoration:none;' href='http://staging.pricelizer.com'>Powered by Pricelizer</a>";
+                        $modifieddata5 = str_replace($facebook,$facebook_key,$modifieddata4);
+                        $modifieddata6 = str_replace($linkedin,$linkedin_key,$modifieddata5);
+                        $modifieddata7 = str_replace($twitter,$twitter_key,$modifieddata6);
+                        $signup_button = str_replace($google, $google_key,$modifieddata7);
+                        $pricelizer_logo_link = str_replace($simple_signup,$signup_url,$signup_button);
+                        $footer  = str_replace($footer_link,$flink_url,$pricelizer_logo_link);
+                        $modifieddata2 = str_replace($pricelizerlink,$pricelizer_link,$footer);
+                        $mail->Subject = "Abandoned Cart Alert"; //Subject od your mail
+                        $mail->AddAddress($email, "fghgfhgfh"); //To address who will receive this email
+
+                        //$to = "ajay010791@gmail.com";
+                        //$subject = "Abandon Cart Alert"; 
+                        $headers = "From: Abandon Cart Alert";   
+                        $headers .= "Reply-To: ". ($to) . "\r\n";
+                        $headers .= "CC: ajay.singh@webeneturetech.com";
+                        $headers  = "MIME-Version: 1.0" . PHP_EOL; 
+                        $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
+                        $message = '<html><body>';
+                        $message .= '<table rules="all" cellpadding="10" border="0" >';
+
+                        $unsuburl  = "<a href ='".$unsubs_url_key."'><span style='color:#999'>click here</span></a>";
+                        $message .= "</body></html>";	
+                        $unsubs	="UNCLICK";
+
+                        $entire_content_data =  str_replace($unsubs,$unsuburl,$modifieddata2);
+                        $entire_content = str_replace($sitename,$site_name_magento,$entire_content_data);
+                        $message .= $entire_content;
+
+                        $mail->MsgHTML($message);
+                        $send = $mail->Send(); 
+
+                        if($send){ 
+                            echo "send"; 
+                        }			
+                    }
+                }
+            }
+        }
+        $status_abandon = $result1['0']['abandon_status'];					
+        //------------------------------------------EndSend user email-------------------------------------------//
+        //---------------------------------------------------Form control commented by ajay singh------------------------------------------------//
+        //echo $currUrl= $this->getUrl('').$_SERVER['REQUEST_URI']; 
+        echo '<br>'; 
+        if($packagename=="LARGE"||$packagename=="MEDIUM"||$packagename=="Pro"||$packagename=="XXL"||$packagename=="Flex") { 
+            $date = date("Y-m-d H:i:s"); 
+            echo '<h1 class="app-title-name setting_panel" style="font-size:18px">Send invitation to users with abandoned carts.</h1>'; 
+
+        ?>
+
+        <div class="setting-from">
+        <div class="man">
+
+        <div class="auto">
+        <input type="radio" name="status" <?php if($status_abandon == '1'){ echo 'checked'; } else
+            { } ?> id = "auto" value="1"><label>Automatic&nbsp;</label>
+        <input type="radio" name="status" <?php if($status_abandon == '0'){ echo 'checked'; } else
+            { } ?> id="manual" value="0"><label>Manually</label></div></div>
+
+        <?php
+            echo '<div id ="show_val" style="display:none;" class="btn_manage">';
+            echo '<h3 style="text-align: center; white-space: nowrap; float: left; margin-left: -35%;">Define how many days a cart should be abandoned before you send the alert</h3>';
+            echo '<select name="days" id="days">';
+            echo '<option>Select days-</option>';
+            echo '<option value="1">1 Day</option>'; 
+            echo '<option value="5">5 Days</option>'; 
+            echo '<option value="10">10 Days</option>'; 
+            echo '<option value="15">15 Days</option>'; 
+            echo '<option value="20">20 Days</option>'; 
+            echo '<option value="25">25 Days</option>'; 
+            echo '<option value="30">30 Days</option>'; 
+
+            echo '</select>';
+            echo '</div>';
+            echo '<div class="btn_align">';
+            echo '<button name="set" id ="set_form" > Save settings </button>'.'<br>';
+            echo '</div>';
+
+            //echo  $days =$_POST['days'];
+            //---------------------------------------------------Form control commented by ajay singh------------------------------------------------//       
+        ?>
+        <?php } ?>
+    </div>
+
+    <?php
+        //---------------------------------------------------------------Send alert to all user---------------------------------------------------//
+        if($_GET['user_email_all']=='true')
+        {
+            $subscription_status = $read->fetchall("SELECT customer_email FROM Abandoned_email_subscription where subscribe_status ='yes'");
+
+
+            $result=array_intersect($subscription_status,$emailArr);
+
+
+            foreach($emailArr as $cron_user_email) 
+            {
+                //print_r($cron_user_email);
+                //$prodId=explode(',',$cron_user_email['product_id']);		//echo '<pre>';print_r($cron_user_email);
+                $link = "".$base_url."abandon/front/maildata/".'?entity_id='.$cron_user_email['entity_id'].'&prod_id='.$cron_user_email['product_id'].'&customer_id='.$cron_user_email['customer_id'];
+
+                $customer_id =$cron_user_email['customer_id']; // set this to the ID of the customer.
+                $customer_data = Mage::getModel('customer/customer')->load($customer_id);
+                $customer_name = $customer_data['firstname']; 
+
+                $email = $cron_user_email['email'];
+                $mail   = new PHPMailer; // call the class
+                $mail->IsSMTP();
+                $mail->SMTPSecure = "";
+                //$mail->SMTPDebug  = 2;  
+                $mail->Host = 'ssl://smtp.gmail.com'; // platinum.waxspace.com Hostname of the mail server
+                $mail->Port = '465'; //Port of the SMTP like to be 25, 80, 465 or 587
+                $mail->SMTPAuth = true; //Whether to use SMTP authentication
+                $mail->Username = 'keyurshah070@gmail.com';
+                $mail->Password = 'keyur24892070'; //Password for SMTP authentication
+                //$mail->AddReplyTo("admin@quiconnaitunbon.com.com", "Admin"); //reply-to address
+                $mail->SetFrom("keyurshah070@gmail.com"); //From address of the mail 
+                //$mail->SMTPSecure = "tls";
+                // put your while loop here like below, 
+
+                //sending link
+
+                $cur_date = date("l d F ");
+                $read = Mage::getSingleton('core/resource')->getConnection('core_read') ;
+                $write = Mage::getSingleton('core/resource')->getConnection('core_write'); 
+                $abandon_days = $read->fetchall("select * from abandon_cart");
+                $alert_days =  $abandon_days['0']['day'];
+                $getemaildata = $read->fetchall("select * from abandon_email_template");  
+                $firstname = "FIRSTNAME";
+                $site_url = "SITEURL";
+                $xdays    = "XDAYSFROMSETTINGS";
+                $unsubscribe_key = "UNSUBSCRIBE";
+                $date_data = "DATE";
+                $culogo    = "CULOGO";
+                $unsubs_url_key = $base_url.'abandon/front/unsub/?unsubs='.$cron_user_email['customer_id'];
+                $pstring = $getemaildata['0']['email_conetnt'];
+                $modifieddata =  str_replace($firstname,$customer_name,$pstring);
+                $modifieddata1 =  str_replace($site_url,$modified_url,$modifieddata);	
+                $modifieddata3 =  str_replace($xdays,$alert_days,$modifieddata1);
+                $modified_data1 = str_replace($date_data,$cur_date,$modifieddata3);
+                $modified_logo = str_replace($culogo,$img_logo,$modified_data1);
+                $modifieddata4 = str_replace($unsubscribe_key,$unsubs_url_key,$modified_logo);
+                $facebook = "FACEBOOK";
+                $linkedin = "LINKEDIN";
+                $twitter  = "TWITTER";
+                $google   = "GOOGLE";
+                $simple_signup = '1CLICKSIGNUP';
+                $pricelizerlink = 'PRICELIZERLOGO';
+                $footer_link ='FLINK';
+                $sitename = 'SITENAME';
+                //$sitelogo = 'PRICELIZERLOGO';
+                //$facebook_key = "<a href =".$link."><img src ='".$base_site_url."skin/frontend/base/default/images/facebook.jpeg.png' style='width:24px; height:24px; margin-right:10px;' ></a>";
+                //$twitter_key =   "<a href =".$link."><img src ='".$base_site_url."skin/frontend/base/default/images/tweet.jpeg.png' style='width:24px; height:24px; margin-right:10px;' ></a>";
+                //$linkedin_key =  $message .= "<a href =".$link."><img src ='".$base_site_url."skin/frontend/base/default/images/linked.jpeg.png' style='width:24px; height:24px; margin-right:10px;' ></a>";
+                //$google_key = "<a href =".$link."><img src ='".$base_site_url."skin/frontend/base/default/images/google.jpeg.png' style='width:24px; height:24px; margin-right:0px;' ></a></td></tr>";
+                $signup_url = "<a href =".$link."  class='for-hover' style='color: #fff; background:#2f90e2; font-size:14px; padding:6px 14px; text-decoration:none; border:1px solid #fff; border-radius: 4px; box-shadow:3px 3px 3px #ccc; margin-bottom:10px; display:inline-block;'>1-Click Signup</a>";
+                //$signup_url = "<button type='button' onclick = 'window.location.href=".$link."'>1-Click Sign Up</button>";
+                if($result_data['4']['status']=='yes')
+                    $url_data = 'http://www.pricelizer.com';
+                else $url_data="//404notfound";
+                $image_logo_footer = $this->getSkinUrl('images/powered-by-pricelizer.png',array('_secure'=>true));
+                $pricelizer_link = "<a href ='http://www.pricelizer.com/'><img src ='".$image_logo_footer."'  alt='Powered by Pricelizer'></a>"; 
+                $flink_url = "<a style='color:#989898;margin-left:10px; text-decoration:none;' href='http://staging.pricelizer.com'>Powered by Pricelizer</a>";
+                $modifieddata5 = str_replace($facebook,$facebook_key,$modifieddata4);
+                $modifieddata6 = str_replace($linkedin,$linkedin_key,$modifieddata5);
+                $modifieddata7 = str_replace($twitter,$twitter_key,$modifieddata6);
+                $signup_button = str_replace($google, $google_key,$modifieddata7);
+                $pricelizer_logo_link = str_replace($simple_signup,$signup_url,$signup_button);
+                $footer  = str_replace($footer_link,$flink_url,$pricelizer_logo_link);
+                $modifieddata2 = str_replace($pricelizerlink,$pricelizer_link,$footer);
+                $mail->Subject = "Abandoned Cart Alert"; //Subject od your mail
+                $mail->AddAddress($email, "fghgfhgfh"); //To address who will receive this email
+
+                //$to = "ajay010791@gmail.com";
+                //$subject = "Abandon Cart Alert"; 
+                $headers = "From: Abandon Cart Alert";   
+                $headers .= "Reply-To: ". ($to) . "\r\n";
+                $headers .= "CC: ajay.singh@webeneturetech.com";
+                $headers  = "MIME-Version: 1.0" . PHP_EOL;
+                $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
+                $message = '<html><body>';
+                $message .= '<table rules="all" cellpadding="10" border="0" >';
+
+                $unsuburl  = "<a href ='".$unsubs_url_key."'><span style='color:#999'>click here</span></a>";
+                $message .= "</body></html>";	
+                $unsubs	="UNCLICK";
+                $entire_content_data =  str_replace($unsubs,$unsuburl,$modifieddata2);	
+                $entire_content = str_replace($sitename,$site_name_magento,$entire_content_data); 
+                $message .= $entire_content;
+
+                $mail->MsgHTML($message); //Put your body of the message you can place html code here
+                $send = $mail->Send(); //Send the mails
+
+
+
+            }
+
+        }
+        //---------------------------------------------------------------EndSend alert to all user---------------------------------------------------//
+
+    ?>
+
+    <?php 
+        $read4 = Mage::getSingleton('core/resource')->getConnection('core_read') ;
+        $write4 = Mage::getSingleton('core/resource')->getConnection('core_write'); 
+        $result5 = $read4->fetchAll("SELECT * FROM log_url_info where url_id ='14'"); 
+        //print_r($result5);
+        $base_url = $result5['0']['url'];
+
+    ?>
+    <div id="mybox">
+
+    </div>
+
+    <script>
+    jQuery(document).ready(function(){
+    jQuery("#auto").click(function(){
+    jQuery("#show_val").show();
+    });
+    jQuery("#manual").click(function(){
+    jQuery("#show_val").hide();
+    });
+    });
+    </script>
+
+    <script>
+    jQuery(document).ready(function(){
+    jQuery("#set_form").click(function(){
+    var status = jQuery("input[name=status]:checked").val();
+    var day    = jQuery('#days').val();
+    var mage_find = jQuery('#mage_find').val();
+    //alert(day);
+    //alert(status);
+    fromData = 'status='+status+'&day='+day+'&mage_find='+mage_find;
+    jQuery.ajax({
+    type: 'POST',
+    data:fromData,
+    url:"http://localhost/magento19/userformupdate.php",dataType: "json",
+    success:function(result){
+    var Success = result
+    alert(Success.message);
+    } 
+    });
+    }); 
+    });
+    </script>
+
+
+
+
+    <?php
+        $log_url ="SELECT * FROM log_url_info where url_id ='14'"; 
+        $log_exc = mysql_query($log_url);
+        $exc = mysql_fetch_row($log_exc);
+        $base_site_url = $exc['1'];
+
+        $user_email = $result_data['0']['user_email'];
+        $license_key = $result_data['0']['license_key'];
+        $start_date = $result_data['0']['start_date'];
+        $end_date = $result_data['0']['end_date'];
+        $duration_type = $result_data['0']['duration_type'];
+        $current_date = Mage::getModel('core/date')->date('Y-m-d');
+
+    } 
+    elseif($end_date == $current_date && $duration_type =="limited")
+    {
+
+        $prev_date = date('Y-m-d', strtotime($end_date .' -7 day'));
+        if($prev_date)
+        {
+            $prev_date;
+            $end_date;
+            $date1=date_create($end_date);
+            $date2=date_create($prev_date);
+            $diff=date_diff($date1,$date2);
+            $date_diff = $diff->format("%a");
+            $date_diff;
+            if($date_diff=="7")
+            {
+                $to = $user_email;
+                //$to = "ajay.singh@webenturetech.com"; 		 
+                $subject = "Abandon Cart Alert";
+                $headers = "From:'".$to."'";   
+                $headers .= "Reply-To: ". strip_tags($user_email) . "\r\n";
+                $headers .= "CC: susan@example.com\r\n";
+                $headers  = "MIME-Version: 1.0" . PHP_EOL;
+                $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
+                $message = '<html><body>';
+                $message .= '<table rules="all" style="border-color: #666;" cellpadding="10">';
+                $message .= "<tr style='border-bottom:1px solid #ffffff;'><td style='border-bottom:1px solid #ffffff;'>Hi</td></tr>";
+                $message .= "<tr style='border-bottom:1px solid #ffffff;'><td style='border-bottom:1px solid #ffffff;line-height:16px;' >Thank you for your shown interest in the products that you have put into .<br/>
+                your cart at ".$base_site_url.".<br> 
+                We see that you left the cart for a few days and just like to offer you some<br>
+                extra service.<br/>
+                We work with Pricelizer that offers automatic price alerts when the products<br>
+                already chosen by you drop in price.<br/>
+                If you like to receive an email alert when we change the price on the specific<br> product(s) in your cart?
+
+                Then simply with a single mouse click on any of the listed buttons using your<br> preferred social media account we can create an account and have the<br> products added without you having to think a second more about this, Just<br> wait and see as the price drop.</td></tr>";	
+                $message .= "<tr><td><a href =".$link."><img src ='".$base_site_url."skin/frontend/base/default/images/facebook.jpeg.png' style='width:24px; height:24px; margin-right:10px;' ></a>";
+                $message .= "<a href =".$link."><img src ='".$base_site_url."skin/frontend/base/default/images/linked.jpeg.png' style='width:24px; height:24px; margin-right:10px;' ></a>";
+                $message .= "<a href =".$link."><img src ='".$base_site_url."skin/frontend/base/default/images/tweet.jpeg.png' style='width:24px; height:24px; margin-right:10px;' ></a>";
+                $message .= "<a href =".$link."><img src ='".$base_site_url."skin/frontend/base/default/images/google.jpeg.png' style='width:24px; height:24px; margin-right:0px;' ></a></td></tr>";
+                $message .= "<tr style='border:1px solid rgba(0,0,0,0);'><td>If you have any questions about the price monitoring service checkout www.pricelizer.com</td></tr>";
+                $message .= "</table>";
+                $message .= "</body></html>";	 
+                mail($to,$subject,$message,$headers);	
+                if(mail)
+                {
+                    echo 'mail has been send';
+
+                }
+
+            }
+
+        }
+
+
+
+    }
+
+    else 
+    {
+    ?>
+
+    <?php
+        $img_default = Mage::getDesign()->getSkinUrl('images/gear-01.png'); 
+        echo'<div class="align_center">';
+        echo '<img  src="'.$img_default.'" id ="img_link">'; 
+        echo'<h2>Please Provide liscence key</h2>';						
+        echo '<div class="form_content">';
+        echo '<input type="text" name ="email" placeholder="Email" value="'.$user_email.'">'.'<br>';
+        echo '<input type="text" name="licese_key" id="liscence_key" placeholder="License Key" value ="'.$license_key.'">'.'<br>';
+        echo '<button name="set_licen" id="set_licen">GRAB LICENSE KEY</button>';
+        echo '</div>';	
+        echo '</div>';	
+
+    }	
+
+    $img_success = Mage::getDesign()->getSkinUrl('images/gear-03.png'); 
+    $img_bug = Mage::getDesign()->getSkinUrl('images/gear-02.png'); 
+    $img_default = Mage::getDesign()->getSkinUrl('images/gear-01.png'); 
+
+
+?>
+<input type="hidden" value="<?php echo $img_success;  ?>" id="success">
+<input type="hidden" value="<?php echo $img_bug;  ?>" id="bug">
+<input type="hidden" value="<?php echo $img_default;  ?>" id="default">
+<?php 
+    $read4 = Mage::getSingleton('core/resource')->getConnection('core_read') ;
+    $write4 = Mage::getSingleton('core/resource')->getConnection('core_write'); 
+    $result5 = $read4->fetchAll("SELECT * FROM log_url_info where url_id ='14'"); 
+    //print_r($result5);
+    $base_url = $result5['0']['url'];
+
+?>	
+				 
+               <script>
+				 jQuery(document).ready(function(){
+				jQuery("#set_licen").click(function(){
+					var email = jQuery("input[name=email]").val();
+					var liscence_key    = jQuery('#liscence_key').val();
+					var mage_find = jQuery('#mage_find').val();
+					var succ = jQuery("#success").val();
+					var bug = jQuery("#bug").val();
+					var deafult = jQuery("#default").val();
+				
+					 //alert(day);
+					 //alert(status);
+					 fromData = 'email='+email+'&liscence_key='+liscence_key+'&mage_find='+mage_find;
+						  jQuery.ajax({
+							  type: 'POST',
+							  data:fromData,
+							  datatype:'json',
+							  url:'<?php echo 'http://localhost/magento19/license_key.php'?>',
+							  success:function(result){
+								  var Success = result;
+								
+								 if(result==succ)
+								 {
+									  jQuery("#img_link").attr("src", result);
+									  location.reload();
+									 }
+									 else if(result==bug)
+									 {
+										 
+										  jQuery("#img_link").attr("src", result);
+										 }
+										 else if(result == deafult)
+										 {
+											 jQuery("#img_link").attr("src", result);
+											 
+											 }
+							
+								}
+						  });
+						}); 
+				});
+					</script>
+

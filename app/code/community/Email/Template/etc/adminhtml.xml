@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <menu>
+        <email_template module="email_template" translate="title">
+            <title>Abandoned Carts Email Template</title>
+            <sort_order>100</sort_order>
+            <children>
+                <index module="email_template" translate="title">
+                    <title>Email Template</title>
+                    <sort_order>1</sort_order>
+                    <action>adminhtml/custom</action>
+                </index>
+                <catched module="email_template" translate="title">
+                    <title>Caught user Email Template</title>
+                    <sort_order>2</sort_order>
+                    <action>adminhtml/custom/templateSetting</action>
+                </catched>
+                
+                <purchase module="email_template" translate="title">
+                    <title>Purchase Reminder Email template</title>
+                    <sort_order>3</sort_order>
+                    <action>adminhtml/custom/purchaseReminder</action>
+                </purchase>
+            </children>
+            
+        </email_template>
+    </menu>
+    <acl>
+        <resources>
+            <admin>
+                <children>
+                    <email_template translate="title" module="email_template">
+                        <title>My Controller</title>
+                        <sort_order>-100</sort_order>
+                        <children>
+                            <index translate="title">
+                                <title>Email Template</title>
+                                <sort_order>1</sort_order>
+                            </index>
+                            <list translate="title">
+                                <title>Template Setting</title>
+                                <sort_order>2</sort_order>
+                            </list>
+                        </children>
+                    </email_template>
+                </children>
+            </admin>
+        </resources>
+    </acl>
+    
+    
+    
+
+</config>

@@ -1,0 +1,725 @@
+ <?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     default_default
+ * @copyright   Copyright (c) 2014 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<?php
+/**
+ * @var $this Mage_Currencysymbol_Block_Adminhtml_System_Currencysymbol
+ */
+?>
+<style>
+    .cont-mang { float: left; padding: 0 20px; width: 97%; }
+    .cont_form_head { border-bottom: 1px solid #ccc; margin-bottom: 12px; margin-left: 7px; padding-bottom: 10px; width: 98%; border-top:1px solid #ccc; padding-top: 10px; }
+    .data input#fbkey { padding: 2px; width: 250px !important; }
+    table.data{ width: 100%; border: 0; }
+    table.data tr, table.data td{ border: 0; }
+    .grid h1.title-name{font-size:14px; text-transform:capitalize; float:left;margin-right:10px;}
+    .invite_link{font-weight:bold; text-decoration:none;}
+    .invite_link{font-weight:bold; text-decoration:underline;}
+    a.price_alert {
+	background: #EA7601;
+	color: #FFFFFF;   
+	margin-bottom: 10px;
+	padding: 5px 10px;
+	text-align: right;
+	text-decoration: none; border-radius:5px;
+    }
+    a.price_alert:hover{color: #FFFFFF; background:orange;} 
+    .email_send{color:#66a202;}
+    .email_not_send{color:#ff0000;}
+    table.data td{font-size:0.9em;}
+/*    .cont-mang{
+	width: 100%;
+	float: left;
+    }*/
+    .data input[type="text"]{
+	width: 80%;
+    }
+    .grid {
+	float: left;
+	width: 100%;
+    }
+    .app-title-name{text-align:center; padding:10px; font-size:24px; color:#eb5e00;}
+
+    .click-price{width:100%; height:30px; text-align:center;}
+
+    .setting-from{ width:250px; margin:0px auto; height:50px;}
+    .setting-from .man{ width:100px; float:left; font-size:14px;}
+    .setting-from .auto{ width:100px; float:left; font-size:14px;}
+    .form_content {
+	border: 1px solid #EB5E00;
+	box-shadow: 0 0 3px #DDDDDD;
+	margin: 0 auto;
+	padding: 30px;
+	text-align: center;
+
+    }
+    .form_content input {
+	height: 40px;
+	margin-bottom: 10px;
+	width: 100%;
+	padding:10px;
+    }
+    .form_content button {
+	padding:10px;
+    }
+    .align_center{
+	margin:0 auto;
+	width:30%;
+	margin-top:90px;
+	text-align:center;
+
+    }
+    .align_center h2{
+	color:#EB5E00;
+    }
+    .setting-from .man {
+	float: left;
+	font-size: 14px;
+	width: 100%;
+    }
+    .setting-from .auto {
+	float: left;
+	font-size: 14px;
+	font-weight: bold;
+	margin-top: 4px;
+	width: auto;
+    }
+    .setting-from {
+	height: 50px;
+	margin: 0 auto;
+	width: 310px;
+    }
+    .man > h3 {
+	float: left;
+    }
+    .btn_manage{
+	text-align:center;
+    }
+    .btn_manage select{
+	width:200px;
+	height:20px;
+	margin-bottom:5px;
+    }
+    .btn_align{
+	text-align:center;
+    }
+</style>
+<style type="text/css">
+    .white_content {
+	background-color: #ffffff;
+	border: 5px solid ;
+	height: 50%;
+	left: 25%;
+	max-height: 500px;
+	overflow: auto;
+	padding: 13px 15px;
+	position: fixed;
+	top: 20%;
+	width: 50%;
+	z-index: 1008; 
+	display:none;
+    }
+    .close-btn
+    {
+	font-size:20px;
+	float:right;
+    }
+
+
+    .pagination {
+	border-radius: 4px;
+	display: inline-block;
+	margin: 0px;
+	padding-left: 0;
+    }
+    .pagination > li {
+	display: inline;
+    }
+
+    .pagination > li:first-child > a, .pagination > li:first-child > span {
+	border-bottom-left-radius: 4px;
+	border-top-left-radius: 4px;
+	margin-left: 0;
+    }
+
+    .pagination > li, .pagination > li > span {
+	background-color: #fff;
+	border: 1px solid #ddd;
+	color: #428bca;
+	float: left;
+	line-height: 1.42857;
+	margin-left: -1px;
+	padding: 6px 12px;
+	position: relative;
+	text-decoration: none;
+    }
+
+
+    .page{ background-color: #fff;
+	  border: none;
+	  color: #000;
+	  float: left;
+	  line-height: 1.42857;
+	  margin-left: -1px;
+	  padding: 6px 12px;
+	  position: relative;
+	  text-decoration: none;
+    }
+    .centrick{width:275px; margin:0px auto;} 
+    .centrick:after{clear:both;}    
+    .catched-user-tracker .checkbox, .one-click-signup .checkbox, .add-watchlist-button .checkbox{ margin-bottom: 5px; }
+    .catched-user-tracker label, .one-click-signup label, .add-watchlist-button label, .checkbox label{ margin:0 6px; }
+   .catched-user-tracker input, .catched-user-tracker select { margin-bottom: 3px; margin-right: 2px; vertical-align: middle; }
+   .one-click-signup input, .one-click-signup select { margin-bottom: 3px; margin-right: 4px; vertical-align: middle; }
+   .add-watchlist-button input, .add-watchlist-button select { margin-bottom: 3px; margin-right: 4px; vertical-align: middle; }
+   .border-bottm{ border-bottom: 1px solid #ccc; padding-bottom: 10px; margin-bottom: 15px; }
+   .inner-content{ padding: 0 30px; }
+   .checkbox{margin-bottom:5px;}
+   button#catched_setting, button#save_signup, button#save_watchlist, #logo_setting, #link_setting { margin-left: 7px; }
+   .text-success{ padding-left: 7px; margin-top: 5px; color: #3c763d; }
+</style>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script> 
+<script>jQuery.noConflict();</script> 
+<input type="hidden" id ="mage_find" value="<?php echo Mage::helper("greenmodule")->find_mage(); ?>">
+<div class="content-header">
+    <?php echo '<h3 class="icon-head head-report-shopcart-abandoned">Extension Setting Panel</h3>'; ?>
+</div>
+<?php
+
+           
+			$read01 = Mage::getSingleton('core/resource')->getConnection('core_read') ;
+			$write01 = Mage::getSingleton('core/resource')->getConnection('core_write'); 
+			$result01 = $read01->fetchAll("select * from Abandon_social_media_login where provider ='social_media'"); 
+			$result5 = $read01->fetchAll("SELECT * FROM log_url_info where url_id ='14'");
+            $base_url = $result5['0']['url'];
+			//print_r($result01);
+		    //$result01['0']['provider'];									
+			?>
+			    
+			
+		<div class="clearfix"></div>
+
+<?php
+$read_data = Mage::getSingleton('core/resource')->getConnection('core_read');
+$write_data = Mage::getSingleton('core/resource')->getConnection('core_write');
+$result = $read_data->fetchAll("select * from abandoned_extensionsetting");
+
+########################################################################################################################
+#                                  Catched user tracker
+##########################  ############################################################################################
+?>
+<div class="inner-content">
+<div class="catched-user-tracker border-bottm">         
+    <h3>On-site: Inform non-registered user who leaves the site that there are products in the cart</h3>
+    <form id="left_user">
+	<div class="checkbox">
+	    <label for="on">
+	    <input type="radio" name="catched_user"  value="on" <?php if ($result['0']['status'] == 'on') echo 'checked';
+	    else echo ''; ?>>ON
+	    </label>
+	    
+	    <label for="off">
+	    <input type="radio" name="catched_user"  value="off" <?php if ($result['0']['status'] == 'off') echo 'checked';
+	    else echo ''; ?>>OFF
+	    </label>
+	    
+	    
+	    <button type="button" name="save_catched_user" id="catched_setting" class="btn btn-primary btn-xs">Save</button>
+	</div>	
+	
+    </form>
+    <div id="result_msg" class="text-success"></div>
+
+
+
+    <script>
+	jQuery(document).ready(function(){
+	jQuery("#catched_setting").click(function () {
+		//alert("<?php echo $base_url; ?>app/design/adminhtml/default/default/template/Abandoncart/extension_setting.php");
+	    var selectedbooks = jQuery("#left_user").serialize();
+	    var type = 'catched_user';
+	    var mage = jQuery("#mage_find").val();
+	    jQuery.ajax({
+		type: 'POST',
+		data: selectedbooks + '&type=' + type + '&mage=' + mage,
+		url: "/extension_setting.php",
+		success: function (result) {
+			
+		    var Success = result
+		    jQuery("#result_msg").html(Success);
+		}
+	    });
+	});
+});
+    </script>
+
+</div>
+<?php
+#####################################################################################################################################
+#                                             End  Catched user tracker
+##########################  #########################################################################################################
+?>
+
+
+
+<?php
+####################################################################################################################################
+#                                               1 -click signup
+##########################  ########################################################################################################
+?> 
+<div class="one-click-signup border-bottm">
+    <h3>On-site: 1-Click sign up for price alerts for user who leaves the site with products in the cart</h3>
+    <form id="1_click">
+	<div class="checkbox">
+	    <label for="on">
+	    <input type="radio" name="signup"  value="on" <?php if ($result['1']['status'] == 'on') echo 'checked';
+	    else echo ''; ?>>ON
+	    </label>
+	
+	    <label for="off">
+	    <input type="radio" name="signup"  value="off" <?php if ($result['1']['status'] == 'off') echo 'checked';
+	    else echo ''; ?>>OFF
+	    </label>
+	
+	    
+	    <button type="button" name="1click_signup" id="save_signup" class="btn btn-primary btn-xs">Save</button>
+	</div>
+	
+    </form>
+    <div id="click_msg" class="text-success"></div>
+    <script>
+	jQuery(document).ready(function(){
+	jQuery("#save_signup").click(function () {
+	    var selectedbooks = jQuery("#1_click").serialize();
+	    var type = '1_click_signup';
+	    var mage = jQuery("#mage_find").val();
+	    jQuery.ajax({
+		type: 'POST',
+		data: selectedbooks + '&type=' + type + '&mage=' + mage,
+		url: "/extension_setting.php",
+		success: function (result) {
+		    var Success = result
+		    jQuery("#click_msg").html(Success);
+		}
+	    });
+	});
+});
+    </script>
+
+</div>
+<?php
+################################################################################################################
+#                                           End 1 -click signup
+##########################  ####################################################################################
+?> 
+
+
+<?php
+####################################################################################################################################
+#                                               1 -click signup
+##########################  ########################################################################################################
+?> 
+<div class="one-click-signup border-bottm">
+    <h3>On-site: Invite registered customers to setup price alerts</h3>
+    <form id="invite_user_form">
+	<div class="checkbox">
+	    <label for="on">
+	    <input type="radio" name="invite_user"  value="on" <?php if ($result['9']['status'] == 'on') echo 'checked';
+	    else echo ''; ?>>ON
+	    </label>
+	
+	    <label for="off">
+	    <input type="radio" name="invite_user"  value="off" <?php if ($result['9']['status'] == 'off') echo 'checked';
+	    else echo ''; ?>>OFF
+	    </label>
+	
+	    
+	    <button type="button" name="1click_signup" id="invite_user_setting" class="btn btn-primary btn-xs">Save</button>
+	</div>
+	
+    </form>
+    <div id="invite_user_msg" class="text-success"></div>
+    <script>
+	jQuery(document).ready(function(){
+	jQuery("#invite_user_setting").click(function () {
+	    var selectedbooks = jQuery("#invite_user_form").serialize();
+	    var type = 'invite_abandonedcar_user';
+	    var mage = jQuery("#mage_find").val();
+	    jQuery.ajax({
+		type: 'POST',
+		data: selectedbooks + '&type=' + type + '&mage=' + mage,
+		url: "/extension_setting.php",
+		success: function (result) {
+		    var Success = result
+		    jQuery("#invite_user_msg").html(Success);
+		}
+	    });
+	});
+});
+    </script>
+
+</div>
+<?php
+################################################################################################################
+#                                           End 1 -click signup
+##########################  ####################################################################################
+?> 
+
+
+
+
+
+<?php
+####################################################################################################################################
+#                                               Add to watchlist button
+##########################  ########################################################################################################
+?> 
+<div class="add-watchlist-button border-bottm">
+    <h3>On-site: Add to watchlist button on the product pages</h3>
+    <form id="watchlist_form">
+	<div class="checkbox">
+	    <label for="on">
+	    <input type="radio" name="add_to_watch" value="on" <?php if ($result['2']['status'] == 'on') echo 'checked';
+	    else echo ''; ?>>ON
+	    </label>
+	
+	    <label for="off">
+	    <input type="radio" name="add_to_watch"  value="off" <?php if ($result['2']['status'] == 'off') echo 'checked';
+	    else echo ''; ?>>OFF
+	    </label>
+	
+	    
+	    <button type="button" name="watchlist" id="save_watchlist" class="btn btn-primary btn-xs">Save</button>
+	</div>
+	
+    </form>
+    <div id="watch_msg" class="text-success"></div>
+
+    <script>
+	jQuery(document).ready(function(){
+	jQuery("#save_watchlist").click(function () {
+	    var selectedbooks = jQuery("#watchlist_form").serialize();
+	    var type = 'add_to_watchlist';
+	    var mage = jQuery("#mage_find").val();
+	    jQuery.ajax({
+		type: 'POST',
+		data: selectedbooks + '&type=' + type + '&mage=' + mage,
+		url: "/extension_setting.php",
+		success: function (result) {
+		    var Success = result
+		    jQuery("#watch_msg").html(Success);
+		}
+	    });
+	});
+});
+    </script>
+
+</div>
+<?php
+################################################################################################################
+#                                           End add to watchlist
+##########################  ####################################################################################
+?> 
+</div>
+
+
+
+	<?php
+########################################################################################################################
+#                                 Logo and footer link
+##########################  ############################################################################################ 
+	?>
+	<div class="inner-content">
+	    <div class="logo-form border-bottm">
+		<h3>E-Mail: "Powered by Pricelizer" logo in email footer</h3>
+		<form id="logo_form">
+		    <div class="checkbox">
+			<label for="yes">
+			    <input type="radio" name="pri_logo" value="yes" <?php if ($result['3']['status'] == 'yes') echo 'checked';
+	    else echo ''; ?>> ON
+			</label>
+			<label for="no">
+			    <input type="radio" name="pri_logo" value="no" <?php if ($result['3']['status'] == 'no') echo 'checked';
+	    else echo ''; ?>> OFF
+			</label>
+			<label for="find-msg"></label>
+			<button type="button" id="logo_setting">save</button>
+		    </div>
+		    
+		</form> 
+		<div id="logo_msg"  class="text-success"></div>
+	    </div>
+	    
+	   
+	    
+	    
+	    <div class="logo-form border-bottm">
+		<h3>On-site: "Powered by Pricelizer" logo in site footer</h3>
+		<form id="footer_logo">
+		    <div class="checkbox">
+			<label for="yes">
+			    <input type="radio" name="site_logo" value="yes" <?php if ($result['7']['status'] == 'yes') echo 'checked';
+	    else echo ''; ?>> ON
+			</label>
+			<label for="no">
+			    <input type="radio" name="site_logo" value="no" <?php if ($result['7']['status'] == 'no') echo 'checked';
+	    else echo ''; ?>> OFF
+			</label>
+			<label for="find-msg"></label>
+			<button type="button" id="site_logo_setting">save</button>
+		    </div>
+		    
+		</form> 
+		<div id="link_msg_data"  class="text-success"></div>
+	    </div>
+	    
+	    
+	    
+	    	    
+	</div>
+    
+
+
+<?php
+########################################################################################################################
+#                                End Logo and footer link
+##########################  ############################################################################################ 
+?>  
+
+
+
+
+<?php
+########################################################################################################################
+#                                 Ajax for Logo and footer link 
+##########################  ############################################################################################ 
+?> 
+
+<script>
+	jQuery(document).ready(function(){
+    jQuery("#logo_setting").click(function () {
+        var selectedbooks = jQuery("#logo_form").serialize();
+        var type = 'pricelizer_logo';
+        var mage_find = jQuery('#mage_find').val();
+        jQuery.ajax({
+            type: 'POST',
+            data: selectedbooks + '&type=' + type + '&mage=' + mage_find,
+            url: "/extension_setting.php",
+            success: function (result) {
+                var Success = result
+                jQuery("#logo_msg").html(Success);
+            }
+        });
+    });
+});
+</script>
+
+<script>
+	jQuery(document).ready(function(){
+    jQuery("#link_setting").click(function () {
+        var selectedbooks = jQuery("#link_form").serialize();
+        var type = 'link_footer';
+        var mage_find = jQuery('#mage_find').val();
+        jQuery.ajax({
+            type: 'POST',
+            data: selectedbooks + '&type=' + type + '&mage=' + mage_find,
+            url: "/extension_setting.php",
+            success: function (result) {
+                var Success = result
+                jQuery("#link_msg").html(Success);
+            }
+        });
+    });
+});
+</script>
+
+
+
+
+<script>
+	jQuery(document).ready(function(){
+    jQuery("#site_logo_setting").click(function () {
+        var selectedbooks = jQuery("#footer_logo").serialize();
+        var type = 'site_logo';
+        var mage_find = jQuery('#mage_find').val();
+        //alert(selectedbooks);
+        
+        jQuery.ajax({
+            type: 'POST',
+            data: selectedbooks + '&type=' + type + '&mage=' + mage_find,
+            url: "/extension_setting.php",
+            success: function (result) {
+                var Success = result
+                jQuery("#link_msg_data").html(Success);
+            }
+        });
+    });
+});
+</script>
+
+
+
+<?php
+########################################################################################################################
+#                                 End Ajax for Logo and footer link and email
+##########################  ############################################################################################ 
+?> 	
+
+
+<?php
+########################################################################################################################
+#                                Section for purchase reminder/invitation email/outward communication
+##########################  ############################################################################################ 
+?> 		
+<div class="inner-content">
+	    <div class="logo-form border-bottm">
+		<h3>E-Mail: Remind registered user who left the site that there are products in the cart</h3>
+		<form id="pur_reminder">
+		    <div class="checkbox">
+			<label for="yes">
+			    <input type="radio" name="reminder_status" value="yes" <?php if ($result['5']['status'] == 'yes') echo 'checked';
+	    else echo ''; ?>> ON
+			</label>
+			<label for="no">
+			    <input type="radio" name="reminder_status" value="no" <?php if ($result['5']['status'] == 'no') echo 'checked';
+	    else echo ''; ?>> OFF
+			</label>
+			<label for="find-msg"></label>
+			<button type="button" id="reminder_setting">save</button>
+		    </div>
+		    
+		</form> 
+		<div id="reminder_status_msg"  class="text-success"></div>
+	    </div>
+
+<!-- Instent Massenger -->
+	    <div class="ins-msg border-bottm">
+		<h3>Server communications: Disable communication with Pricelizer servers (This will limit your functionality dramatically and require you to use the subscription package with fixed pricing)</h3>
+		<form id="outcom">
+		    <div class="checkbox">
+			<label for="yes">
+			    <input type="radio" name="outwards_com" value="yes" <?php if ($result['6']['status'] == 'yes') echo 'checked';
+	    else echo ''; ?>> ON
+			</label>
+			<label for="no">
+			    <input type="radio" name="outwards_com" value="no" <?php if ($result['6']['status'] == 'no') echo 'checked';
+	    else echo ''; ?>> OFF
+			</label>
+			<label for="find-msg"></label>
+			<button type="button" id="outwards_setting">save</button>
+		    </div>
+		    
+		</form> 
+		<div id="outwards_com_msg"  class="text-success"></div>
+		</div>
+  
+
+		<h3>Abandoned cart reminder (similar to the Catch user function but without the pricelizer registration, a button to get back to the cart and finalize the order and a list of the products in the cart.)</h3>
+		<form id="aban_reminder">
+		    <div class="checkbox">
+			<label for="yes">
+			    <input type="radio" name="aba_remin_setting" value="yes" <?php if ($result['8']['status'] == 'yes') echo 'checked';
+	    else echo ''; ?>> ON
+			</label>
+			<label for="no">
+			    <input type="radio" name="aba_remin_setting" value="no" <?php if ($result['8']['status'] == 'no') echo 'checked';
+	    else echo ''; ?>> OFF
+			</label>
+			<label for="find-msg"></label>
+			<button type="button" id="abandoned_reminder_setting">save</button>
+		    </div>
+		    
+		</form> 
+		<div id="abandoned_reminder_msg"  class="text-success"></div>
+		</div>
+</div>   
+
+
+
+
+
+<script>
+	jQuery(document).ready(function(){
+    jQuery("#abandoned_reminder_setting").click(function () {
+        var selectedbooks = jQuery("#aban_reminder").serialize();
+        //alert(selectedbooks);
+        var type = 'abandoned_cart_reminder';
+        var mage_find = jQuery('#mage_find').val();
+        jQuery.ajax({
+            type: 'POST',
+            data: selectedbooks + '&type=' + type + '&mage=' + mage_find,
+            url: "/extension_setting.php",
+            success: function (result) {
+                var Success = result
+                jQuery("#abandoned_reminder_msg").html(Success);
+            }
+        });
+    });
+});
+</script>
+
+
+
+
+<script>
+	jQuery(document).ready(function(){
+    jQuery("#reminder_setting").click(function () {
+        var selectedbooks = jQuery("#pur_reminder").serialize();
+        var type = 'purchase_reminder';
+        var mage_find = jQuery('#mage_find').val();
+        jQuery.ajax({
+            type: 'POST',
+            data: selectedbooks + '&type=' + type + '&mage=' + mage_find,
+            url: "/extension_setting.php",
+            success: function (result) {
+                var Success = result
+                jQuery("#reminder_status_msg").html(Success);
+            }
+        });
+    });
+});
+</script>
+
+
+<script>
+	jQuery(document).ready(function(){
+    jQuery("#outwards_setting").click(function () {
+        var selectedbooks = jQuery("#outcom").serialize();
+        var type = 'outwards_communication';
+        var mage_find = jQuery('#mage_find').val();
+        jQuery.ajax({
+            type: 'POST',
+            data: selectedbooks + '&type=' + type + '&mage=' + mage_find,
+            url: "/extension_setting.php",
+            success: function (result) {
+                var Success = result
+                jQuery("#outwards_com_msg").html(Success);
+            }
+        });
+    });
+});
+</script>
+

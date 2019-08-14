@@ -1,0 +1,93 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Greenacorn_Greenmodule>
+            <version>0.1.0</version>
+        </Greenacorn_Greenmodule>
+    </modules>
+    <global>
+        <models/>
+        <blocks/>
+        <resources>	
+            <greenmodule_setup>
+                <setup>
+                    <module>Greenacorn_Greenmodule</module>
+                </setup>
+                <connection>
+                    <use>core_setup</use>
+                </connection>
+            </greenmodule_setup>
+            <greenmodule_write>
+                <connection>
+                    <use>core_write</use>
+                </connection>
+            </greenmodule_write>
+            <greenmodule_read>
+                <connection>
+                    <use>core_read</use>
+                </connection>
+            </greenmodule_read>
+        </resources>	
+        <helpers>
+            <greenmodule>
+                <class>Greenacorn_Greenmodule_Helper</class>
+            </greenmodule>
+        </helpers>
+    </global>
+
+    <frontend>
+        <events>
+            <sales_order_place_after>
+                <observers>
+                    <greenmodule_setup_sales_order_place_after>
+                        <class>Greenacorn_Greenmodule_Model_Observer</class>
+                        <method>salesOrderPlaceAfter</method>
+                    </greenmodule_setup_sales_order_place_after>                    
+                </observers>
+            </sales_order_place_after>
+        </events>
+        <routers>
+            <checkout> 
+                <args>
+                    <modules>
+                        <Greenacorn_Greenmodule before="Mage_Checkout">Greenacorn_Greenmodule</Greenacorn_Greenmodule>    
+                    </modules>    
+                </args>
+            </checkout>
+        </routers>
+    </frontend>
+
+
+
+    <admin>
+        <acl>
+            <routers>
+                <greenacorn_greenmodule>
+                    <use>admin</use>
+                    <args>
+                        <module>Greenacorn_Greenmodule</module>
+                        <frontName>abandon</frontName>
+                    </args>
+                    <args>
+                        <modules>
+                            <foo_bar before="Mage_Adminhtml">Greenacorn_Greenmodule_Adminhtml</foo_bar>
+                        </modules>
+                    </args>
+
+                </greenacorn_greenmodule>
+            </routers>
+        </acl>
+    </admin>
+    <frontend>
+        <routers>
+            <greenmodule>
+                <use>standard</use>
+                <args>
+                    <module>Greenacorn_Greenmodule</module>
+                    <frontName>abandon</frontName>
+                </args>
+            </greenmodule>
+        </routers>  
+
+    </frontend>
+</config>

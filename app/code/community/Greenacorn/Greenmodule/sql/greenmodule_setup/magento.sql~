@@ -1,0 +1,84 @@
+-- phpMyAdmin SQL Dump
+-- version 4.0.3
+-- http://www.phpmyadmin.net
+--
+-- Host: localhost
+-- Generation Time: Sep 19, 2014 at 01:50 PM
+-- Server version: 5.5.33-cll-lve
+-- PHP Version: 5.4.21
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `Abandon_added_product`
+--
+
+CREATE TABLE IF NOT EXISTS `Abandon_added_product` (
+  `abandon_id` int(11) NOT NULL AUTO_INCREMENT,
+  `added_user_id` varchar(255) NOT NULL,
+  `added_prod_id` varchar(255) NOT NULL,
+  `added_entity_id` varchar(255) NOT NULL,
+  `abandon_email_status` tinyint(1) NOT NULL,
+  PRIMARY KEY (`abandon_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=11 ;
+
+--
+-- Dumping data for table `Abandon_added_product`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `abandon_cart`
+--
+
+CREATE TABLE IF NOT EXISTS `abandon_cart` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `abandon_status` tinyint(1) NOT NULL,
+  `day` tinyint(255) NOT NULL,
+  `date` datetime NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `abandon_cart`
+--
+
+INSERT INTO `abandon_cart` (`id`, `abandon_status`, `day`, `date`) VALUES
+(1, 1, 5, '2014-09-19 06:40:50');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `Abandon_social_media_login`
+--
+
+CREATE TABLE IF NOT EXISTS `Abandon_social_media_login` (
+  `social_id` int(11) NOT NULL AUTO_INCREMENT,
+  `provider` varchar(255) NOT NULL,
+  `social_api` varchar(255) NOT NULL,
+  `social_secret_key` varchar(255) NOT NULL,
+  PRIMARY KEY (`social_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
+
+--
+-- Dumping data for table `Abandon_social_media_login`
+--
+
+INSERT INTO `Abandon_social_media_login` (`social_id`, `provider`, `social_api`, `social_secret_key`) VALUES
+(1, 'fb', '604048206379521', '6c81c6c5a038743cd0af8d8e9f4401ae'),
+(2, 'google', '971328528189-rnrnfkhvj7qm4jvf1ug2be4ma2ot3tro.apps.googleusercontent.com', 'nyvMeWp-KXCzHJcWg1G49dPP'),
+(3, 'linkedin', '75i0kf9y2r81qt', 'C0snmVI97FAO8oO0');
+
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Catalog Product Price Indexer Option Aggregate Index Table';
+

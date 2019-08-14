@@ -1,0 +1,38 @@
+<?xml version="1.0" ?>
+<config>
+    <menu>
+        <priceliz_statistics translate="title" module="statistics">
+            <title>Reports</title>
+            <sort_order>9999</sort_order>
+            
+            <children>
+                <index module="statistics" translate="title">
+                    <title>Reports</title>
+                    <sort_order>1</sort_order>
+                    <action>statistics/index/index</action>
+                </index>
+                
+                <trackip module="statistics" translate="title">
+                    <title>Non Registered user statistics</title>
+                    <sort_order>2</sort_order>
+                    <action>statistics/index/nonReg</action>
+                </trackip>
+                
+                <list module="statistics" translate="title">
+                    <title>Statistics</title>
+                    <sort_order>3</sort_order>
+                    <action>statistics/index/statistics</action>
+                </list>
+                
+                <layer module="statistics" translate="title">
+                    <title>Statistics layered graph</title>
+                    <sort_order>4</sort_order>
+                    <action>statistics/index/layerGrapgh</action>
+                </layer>
+            </children>
+            
+            
+        </priceliz_statistics>
+    </menu>
+</config>
+ 

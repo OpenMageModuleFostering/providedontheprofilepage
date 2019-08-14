@@ -1,0 +1,150 @@
+<?php 
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     default_default
+ * @copyright   Copyright (c) 2014 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<?php
+/**
+ * @var $this Mage_Currencysymbol_Block_Adminhtml_System_Currencysymbol
+ */
+?>
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script>jQuery.noConflict();</script> 
+<title>Social Media Login</title>
+
+<style>
+.social-box {
+  width: 100%;
+}
+
+.social-box img{
+	margin:0 5px;
+	max-width:100%;
+	cursor:pointer;
+}
+.mid_sec{
+	max-width:350px;
+	margin:10% auto;
+	padding:40px;
+	border:1px solid #d5d5d5;
+	border-radius:5px;
+	text-align:center;
+	box-shadow:0 0 2px rgba(0,0,0,.5);
+	background:#eee;
+}
+.logo{
+	width:60%;
+}
+.btn-margh{
+	margin: 10px 0; 
+}
+.modal-dialog{
+	margin-top: 100px;
+}
+.margin-top{
+		margin-top:10px;
+		margin-bottom:10px;
+}
+</style>
+
+
+<?php $cart_url = Mage::helper('checkout/cart')->getCartUrl(); ?>
+<script>
+jQuery(document).ready(function(){
+    jQuery("#back_cart").click(function(){
+        var url = "<?php echo $cart_url; ?>";
+         window.location.assign(url);
+    });
+});
+</script>
+<?php echo $this->getHeader(); ?> 
+<div class="mid_sec">
+	<img src="<?php echo $this->getSkinUrl('images/logo-1.png');?>" class="logo">
+	<h2>Activate your price alerts.</h2>
+	<p>Simply submit your email address or click on the social media buttons to activate price alerts on the product(s) in your cart using Pricelizer.</p>
+<?php
+$read_data = Mage::getSingleton('core/resource')->getConnection('core_read');
+$write_data = Mage::getSingleton('core/resource')->getConnection('core_write');
+$result = $read_data->fetchAll("select * from abandoned_extensionsetting");
+if($result['1']['status'] == 'on') { ?>
+	
+	     <input type="text" name="email" id="left_user_email" class="form-control" placeholder="Email">
+	    
+	      <button type="button" class="btn btn-primary margin-top" id="signup">1-Click Signup</button>
+<?php  } else  {?>	  
+	      <button type="button" class="btn btn-primary margin-top" id="back_cart">Go back to your cart</button>    
+	<?php  } ?>      
+	      <div class="clearboth"></div>
+	     
+	<!--<div class="social-box">
+		<img src ="<?php echo $this->getSkinUrl('images/facebook.jpeg.png'); ?>" class="fb_login" >
+		<img src ="<?php echo $this->getSkinUrl('images/linked.jpeg.png'); ?>" class="lkin_login" >
+		<img src ="<?php echo $this->getSkinUrl('images/google.jpeg.png'); ?>" class="gp_login" >
+	
+	</div>-->
+	
+</div>
+
+
+<?php
+$read_data = Mage::getSingleton('core/resource')->getConnection('core_read') ;
+	$write_data = Mage::getSingleton('core/resource')->getConnection('core_write');            
+    $result = $read_data->fetchAll("select * from abandoned_extensionsetting");
+    
+    if($result['1']['status']=='on')
+    {
+
+?>
+
+	     <script>
+			 jQuery(document).ready(function(){
+				jQuery("#signup").click(function(){
+					var left_user_email = jQuery('#left_user_email').val();
+					//alert(left_user_email);
+					
+				   url='http://magento.pricelizer.com/index.php/abandon/front/guestuser/?user_email='+left_user_email;
+							  //url:"http://projects.udaantechnologies.com/magentodev/index.php/greenmodule/front/guestuser",
+					window.location.replace(url);		 
+							  
+						}); 
+				});
+					</script>
+<?php } else {  ?>
+	
+	
+	 <script>
+		 jQuery(document).ready(function(){
+				jQuery("#signup").click(function(){
+					  alert('This action disabled from the admin .To use it please contact site owner!');	 
+							  
+						}); 
+				});
+					</script>
+	
+	<?php } ?>
+	
